@@ -25,6 +25,21 @@
                 cursor: pointer;
             }
             /*Search bar Style*/
+
+            /* Table style */
+            table {
+                width: 50%;
+                border-collapse: collapse;
+            }
+            /* table header style */
+            th {
+                padding: 8px; 
+                text-align: left; 
+            }
+            /* table data cells style  */
+            td {
+                padding: 8px;
+            }
         </style>
     </head>
     <body>
@@ -115,6 +130,10 @@
             <input type="text" placeholder="Category" required>
             <label >Authors</label>
             <input type="text" placeholder="Authors" required>
+            <label>About</label>
+            <input type="text" placeholder="About the book" required>
+            <label>Select an image:</label>
+            <input type="file" id="image" name="image" accept="image/*">
             <button type="submit">Add Book</button>
         </form>
         <!-- FORM TO ADD NEW BOOK -->
