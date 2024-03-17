@@ -25,6 +25,22 @@
                 cursor: pointer;
             }
             /*Search bar Style*/
+
+            /*Username bar Style*/
+            #username-bar{
+                width: 200px;
+                padding: 5px;
+                border: 1px solid #ccc;
+            }
+            /*Username bar Style*/
+            
+            /*Password bar Style*/
+            #password-bar{
+                width: 200px;
+                padding: 5px;
+                border: 1px solid #ccc;
+            }
+            /*Password bar Style*/
         </style>
     </head>
     <body>
@@ -47,12 +63,12 @@
         <form method="post">
             <div>
                 <label>Username</label>
-                <input type="text" required placeholder="Username"  name="username">
+                <input type="text" id="username-bar" required placeholder="Username"  name="username">
             </div>
             <br>
             <div>
                 <label>password</label>
-                <input type="password" required placeholder="password" name="password">
+                <input type="password" id="password-bar" required placeholder="password" name="password">
             </div>
             <input type="submit">          
         </form>
