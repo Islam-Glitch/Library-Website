@@ -1,0 +1,81 @@
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Book Store</title>
+        <style>
+             /*Navigation Bar Style*/
+            h3 {
+                display: inline-block;
+                margin-right: 50px;
+            }
+
+            /*Navigation Bar Style*/
+
+            /* Table style */
+            table {
+                width: 50%;
+                border-collapse: collapse;
+            }
+            /* table header style */
+            th {
+                padding: 8px;
+                text-align: left;
+            }
+            /* table data cells style  */
+            td {
+                padding: 8px;
+            }
+            /* Table style */
+        </style>
+    </head>
+    <body>
+        <!--Navigation Bar-->
+        <h3> <a href="Offers.html">Offers</a> </h3>
+        <h3> <a href="Home Page.html">Home Page</a> </h3>
+        <h3> <a href="Categories.html">Categories </a></h3>
+        <h3> <a href="Authors.html">Authors</a> </h3>
+        <h3> <a href="Book_List.html">Book List</a> </h3>
+        <h3> <a href="Request.html">Request Book</a> </h3>
+        <h3> <a href="Login.html">Login</a> </h3>
+        <h3> <a href="Signup.html">Sign Up</a> </h3>
+        <!--Navigation Bar-->
+        <br>
+        <h3>The list of borrowed books</h3>
+        <table id="book-table">
+            <thead>
+                <tr>
+                    <th>Book Title</th>
+                    <th>Category</th>
+                    <th>Authors</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Sample books -->
+                <tr>
+                    <td><a href="book.html">Book 1</a></td>
+                    <td>Category 1</td>
+                    <td>Tarek</td>
+                    <td>
+                        <button class="delete-btn">Remove</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="book.html">Book 2</a></td>
+                    <td>Category 2</td>
+                    <td>Tarek</td>
+                    <td>
+                        <button class="delete-btn">Remove</button>
+                    </td>
+                </tr>
+               
+            </tbody>
+        </table>
+        <!-- THE BOOK LIST -->
+        <br>
+        <button type="submit"><a href="book.html">Add Another Book</a></button>
+        <br>
+        <button type="submit"><a href="confirm.html">Confirm</a></button>
+
+    </body>
+</html>
