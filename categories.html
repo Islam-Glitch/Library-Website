@@ -1,39 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Categories</title>
- 
-</head>
-<h1>Categories</h1>
+    <style>
+      /*Navigation Bar Style*/
+      h3 {
+        display: inline-block;
+        margin-right: 50px;
+      }
+      /*Search bar Style*/
+      #search-bar {
+        width: 200px;
+        padding: 5px;
+        border: 1px solid #ccc;
+      }
 
-<body>
-<table>
-    <tr>
-        <th> Categorie1</th>
-        <th> Categorie2</th>
-        <th> Categorie3</th>
-        <th> Categorie4</th>
-        <th> Categorie5</th>
-    </tr>
-    <tr>
-        <td>book1</td>
-        <td>book2</td>
-        <td>book3</td>
-        <td>book4</td>
-        <td>book5</td>
-    </tr>
-    <tr>
-        <td>book1</td>
-        <td>book2</td>
-        <td>book3</td>
-        <td>book4</td>
-        <td>book5</td>
-    </tr>
-</table>
+      #search-button {
+        padding: 5px 10px;
+        background-color: #ddd;
+        border: 1px solid #ccc;
+        cursor: pointer;
+      }
+      /*Search bar Style*/
 
+      /*Navigation Bar Style*/
+    </style>
+  </head>
+  <body>
+    <!--Navigation Bar-->
+    <h3><a href="Offers.html">Offers</a></h3>
+    <h3><a href="index.html">Home Page</a></h3>
+    <h3><a href="Categories.html">Categories </a></h3>
+    <h3><a href="book.html">Book List</a></h3>
+    <h3><a href="Request_book.html">Request Book</a></h3>
+    <h3><a href="Login.html">Login</a></h3>
+    <h3><a href="Signup.html">Register</a></h3>
+    <!--Navigation Bar-->
+    <br />
+    <!--Search Bar-->
+    <input
+      type="text"
+      name="Search"
+      id="search-bar"
+      placeholder="Search Books"
+    />
+    <button type="submit" id="search-button">Search</button>
+    <!--Search Bar-->
 
-
-</body>
+    <h1>Categories</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Historical</th>
+          <th>علوم إسلامية</th>
+        </tr>
+      </thead>
+      <tbody>
+        <td><a href="book.html">Grant</a></td>
+      </tbody>
+      <tr>
+        <td><a href="book.html">الكامل في التاريخ</a></td>
+        <td><a href="book.html">الطريق إلى القرآن</a></td>
+      </tr>
+      <tr>
+        <td><a href="book.html">تاريخ الإسلام ووفيات المشاهير والأعلام</a></td>
+      </tr>
+    </table>
+  </body>
 </html>

@@ -48,9 +48,11 @@
   </head>
 
   <body>
-    <section>
-      <h3>This is book list</h3>
-    </section>
+        <section>
+            <h3>Admin Panel</h3>
+            <h3><a href="adminhomepage.html">Home</a>
+          </section>
+
 
     <!-- THE BOOK LIST -->
     <!--  -->
@@ -66,7 +68,7 @@
       <tbody>
         <!-- Sample books -->
         <tr>
-          <td><a href="book.html">Grant</a></td>
+          <td><a href="book1.html">Grant</a></td>
           <td>Historical</td>
           <td>Hamilton</td>
           <td>
@@ -79,9 +81,11 @@
           </td>
         </tr>
         <tr>
-          <td><a href="book.html">Book 2</a></td>
-          <td>Category 2</td>
-          <td>Tarek</td>
+          <td>
+            <a href="book2.html">تاريخ الإسلام ووفيات المشاهير والأعلام</a>
+          </td>
+          <td>Historical</td>
+          <td>شمس الدين الذهبي</td>
           <td>
             <input
               type="button"
@@ -92,9 +96,9 @@
           </td>
         </tr>
         <tr>
-          <td><a href="book.html">Book 3</a></td>
-          <td>Category 3</td>
-          <td>Tarek</td>
+          <td><a href="book3.html">الكامل في التاريخ</a></td>
+          <td>Historical</td>
+          <td>ابن الأثير</td>
           <td>
             <input
               type="button"
@@ -105,48 +109,9 @@
           </td>
         </tr>
         <tr>
-          <td><a href="book.html">Book 4</a></td>
-          <td>Category 2</td>
-          <td>Tarek</td>
-          <td>
-            <input
-              type="button"
-              onclick="location.href='Edit Book.html';"
-              value="Edit"
-            />
-            <button class="delete-btn">Delete</button>
-          </td>
-        </tr>
-        <tr>
-          <td><a href="book.html">Book 5</a></td>
-          <td>Category 1</td>
-          <td>Tarek</td>
-          <td>
-            <input
-              type="button"
-              onclick="location.href='Edit Book.html';"
-              value="Edit"
-            />
-            <button class="delete-btn">Delete</button>
-          </td>
-        </tr>
-        <tr>
-          <td><a href="book.html">Book 6</a></td>
-          <td>Category 3</td>
-          <td>Tarek</td>
-          <td>
-            <input
-              type="button"
-              onclick="location.href='Edit Book.html';"
-              value="Edit"
-            />
-            <button class="delete-btn">Delete</button>
-          </td>
-        </tr>
-        <tr>
-          <td><a href="book.html">Book 7</a></td>
-          <td>Category 1</td>
-          <td>Tarek</td>
+          <td><a href="book4.html">الطريق إلي القرآن</a></td>
+          <td>علوم إسلامية</td>
+          <td>إبراهيم بن عمر السكران</td>
           <td>
             <input
               type="button"
@@ -163,7 +128,7 @@
 
     <!-- FORM TO ADD NEW BOOK -->
     <form id="add-book">
-      <label><strong>Add new book</strong></label>
+      <label>Add new book</label>
       <br />
       <label>Book Title:</label>
       <input type="text" id="book-title" placeholder="Book title" required />
