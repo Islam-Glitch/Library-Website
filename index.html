@@ -1,43 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Book Store</title>
-    <style>
-      /*Navigation Bar Style*/
-      h3 {
-        display: inline-block;
-        margin-right: 50px;
-      }
-      nav {
-        margin-right: 50px;
-        background-color: white; 
-      }
-      /*Navigation Bar Style*/
-
-      /*Search bar Style*/
-      #search-bar {
-        width: 200px;
-        padding: 5px;
-        border: 1px solid #ccc;
-      }
-
-      #search-button {
-        padding: 5px 10px;
-        background-color: #ddd;
-        border: 1px solid #ccc;
-        cursor: pointer;
-      }
-      /*Search bar Style*/
-      /* cove page  */
-      body {
-        background-image: url('Data/Photos/cover.jpg');
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-size: cover;
-        /* padding-top: 60px; */
-      }
-    
-    </style>
+    <link rel="stylesheet" href="CSS/Style.CSS" />
   </head>
 
   <body>
@@ -51,10 +18,8 @@
       <h3><a href="Login.html">Login</a></h3>
       <h3><a href="Signup.html">Sign Up</a></h3>
     </nav>
-    
-    <!--Navigation Bar-->
+
     <br />
-    <!--Search Bar-->
     <input
       type="text"
       name="Search"
@@ -62,6 +27,5 @@
       placeholder="Search Books"
     />
     <button type="submit" id="search-button">Search</button>
-    <!--Search Bar-->
   </body>
 </html>
