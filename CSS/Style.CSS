@@ -1,6 +1,11 @@
 nav {
   align-items: center;  /*Aligns logo vertically in navbar*/
   background-color: #e1eee2f1;  /* Optional background color */
+  display: flex;
+  width: fit-content;
+  height: 80px;
+  border-radius: 20px;
+  margin: 100 0;
 }
 
 nav img {
@@ -28,7 +33,7 @@ form{
   width: 300px;
   padding: 20px;
   background-color: #e1eee2f1;
-  border-radius: 10px;
+  border-radius: 20px;
 }
 
 /*Search bar Style*/
