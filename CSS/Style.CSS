@@ -1,6 +1,6 @@
 nav {
-  align-items: center;  /*Aligns logo vertically in navbar*/
-  background-color: #e1eee2f1;  /* Optional background color */
+  align-items: center; /*Aligns logo vertically in navbar*/
+  background-color: white; /* Optional background color */
   display: flex;
   width: fit-content;
   height: 80px;
@@ -9,25 +9,23 @@ nav {
 }
 
 nav img {
-  max-width: 200px;  /* Adjust to your desired maximum width */
-  max-height: 100px;  /* Adjust to your desired maximum height */
+  max-width: 200px; /* Adjust to your desired maximum width */
+  max-height: 100px; /* Adjust to your desired maximum height */
   line-height: 0px;
 }
 
-nav a{
+nav a {
   text-decoration: none;
   margin: 0 10px;
 }
 
-nav h3{
+nav h3 {
   line-height: 0px;
 }
 
-
-
 /*Navigation Bar Style*/
 
-form{
+form {
   border: 4px solid #ccc;
   margin: 0 500px;
   width: 300px;
@@ -97,20 +95,28 @@ h3 {
 
 /* Table style */
 table {
-  width: 50%;
+  width: 100%;
   border-collapse: collapse;
+  border: 1px solid;
 }
 /* table header style */
 th {
   padding: 8px;
   text-align: left;
+  border: 1px solid;
+  text-align: center;
+  background-color: #0a0a0a;
+  color: white;
 }
 /* table data cells style  */
 td {
   padding: 8px;
+  border: 1px solid;
+  text-align: center;
 }
 
-*{
+* {
   font-family: "Pacifico", cursive;
   padding-left: 2px;
-}   
+  color: white;
+}
