@@ -1,12 +1,35 @@
-h3 {
-  display: inline-block;
-  margin-right: 50px;
-}
 nav {
-  margin-right: 50px;
-  background-color: white;
+  align-items: center;  /*Aligns logo vertically in navbar*/
+  background-color: #e1eee2f1;  /* Optional background color */
 }
+
+nav img {
+  max-width: 200px;  /* Adjust to your desired maximum width */
+  max-height: 100px;  /* Adjust to your desired maximum height */
+  line-height: 0px;
+}
+
+nav a{
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+nav h3{
+  line-height: 0px;
+}
+
+
+
 /*Navigation Bar Style*/
+
+form{
+  border: 4px solid #ccc;
+  margin: 0 500px;
+  width: 300px;
+  padding: 20px;
+  background-color: #e1eee2f1;
+  border-radius: 10px;
+}
 
 /*Search bar Style*/
 #search-bar {
@@ -24,18 +47,17 @@ nav {
 /*Search bar Style*/
 /* cove page  */
 body {
-  background-image: url("../Data/Photos/cover.jpg");
+  background-image: url("../Material/OfficialBackground.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
+  background-position: left top;
+  font-size: 1.5em;
   /* padding-top: 60px; */
 }
 
 /*Navigation Bar Style*/
-h3 {
-  display: inline-block;
-  margin-right: 50px;
-}
+
 /*Navigation Bar Style*/
 
 /*Username bar Style*/
@@ -82,3 +104,8 @@ th {
 td {
   padding: 8px;
 }
+
+*{
+  font-family: "Pacifico", cursive;
+  padding-left: 2px;
+}   
