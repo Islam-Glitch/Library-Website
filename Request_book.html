@@ -4,12 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quirky Quill</title>
-    <link rel="icon" type="image/x-icon" href="Material/NewOfficialLogo.png"> <link rel="stylesheet" href="CSS/Style.CSS" />
+    <link rel="icon" type="image/x-icon" href="Material/NewOfficialLogo.png" />
+    <link rel="stylesheet" href="CSS/Style.CSS" />
   </head>
   <body>
     <!--Navigation Bar-->
     <nav>
-      <a href="index.html"><img src="Material/OfficalLogo.png" alt="Logo"></a>
+      <a href="index.html"><img src="Material/OfficalLogo.png" alt="Logo" /></a>
       <h3><a href="Offers.html">Offers</a></h3>
       <h3><a href="index.html">Home Page</a></h3>
       <h3><a href="categories.html">Categories </a></h3>
@@ -20,17 +21,28 @@
     </nav>
     <!--Navigation Bar-->
     <br />
-    <h2>Request Book</h2>
+    <center><h2>Request Book</h2></center>
+    <form>
+      <center>
+        <label for="book_title">Book Title</label>
+      </center>
+      <center>
+        <input type="text" id="book_title" name="book_title" required />
+      </center>
 
-    <label for="book_title">Book Title:</label>
-    <input type="text" id="book_title" name="book_title" required />
+      <center>
+        <label for="author"> Book Author</label>
+      </center>
+      <center><input type="text" id="author" name="author" required /></center>
 
-    <label for="author"> Book Author:</label>
-    <input type="text" id="author" name="author" required />
+      <center>
+        <label for="Any Note">Any Note</label>
+      </center>
+      <center>
+        <textarea id="Any Note " name="Any Note " rows="4"></textarea>
+      </center>
 
-    <label for="Any Note">Any Note </label>
-    <textarea id="Any Note " name="Any Note " rows="4"></textarea>
-
-    <input type="submit" value="SEND REQUEST" />
+      <center><button type="submit">SEND REQUEST</button></center>
+    </form>
   </body>
 </html>

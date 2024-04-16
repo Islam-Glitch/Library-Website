@@ -28,11 +28,7 @@
           <td>Historical</td>
           <td>Hamilton</td>
           <td>
-            <input
-              type="button"
-              onclick="location.href='Edit Book.html';"
-              value="Edit"
-            />
+            <button class="Edit-btn">Edit</button>  
             <button class="delete-btn">Delete</button>
           </td>
         </tr>
@@ -43,11 +39,7 @@
           <td>Historical</td>
           <td>شمس الدين الذهبي</td>
           <td>
-            <input
-              type="button"
-              onclick="location.href='Edit Book.html';"
-              value="Edit"
-            />
+            <button class="Edit-btn">Edit</button>  
             <button class="delete-btn">Delete</button>
           </td>
         </tr>
@@ -56,11 +48,7 @@
           <td>Historical</td>
           <td>ابن الأثير</td>
           <td>
-            <input
-              type="button"
-              onclick="location.href='Edit Book.html';"
-              value="Edit"
-            />
+            <button class="Edit-btn">Edit</button>  
             <button class="delete-btn">Delete</button>
           </td>
         </tr>
@@ -69,11 +57,7 @@
           <td>علوم إسلامية</td>
           <td>إبراهيم بن عمر السكران</td>
           <td>
-            <input
-              type="button"
-              onclick="location.href='Edit Book.html';"
-              value="Edit"
-            />
+            <button class="Edit-btn">Edit</button>  
             <button class="delete-btn">Delete</button>
           </td>
         </tr>
@@ -83,20 +67,20 @@
     <br />
 
     <!-- FORM TO ADD NEW BOOK -->
+    <center><h3>Add new book</h3></center>
     <form id="add-book">
-      <label>Add new book</label>
       <br />
-      <label>Book Title:</label>
-      <input type="text" id="book-title" placeholder="Book title" required />
-      <label>Category</label>
-      <input type="text" placeholder="Category" required />
-      <label>Authors</label>
-      <input type="text" placeholder="Authors" required />
-      <label>About</label>
-      <input type="text" placeholder="About the book" required />
-      <label>Select an image:</label>
-      <input type="file" id="image" name="image" accept="image/*" />
-      <button type="submit">Add Book</button>
+      <center><label>Book Title:</label></center>
+      <center><input type="text" id="book-title" placeholder="Book title" required /></center>
+      <center><label>Category</label></center>
+      <center><input type="text" placeholder="Category" required /></center>
+      <center><label>Authors</label></center>
+      <center><input type="text" placeholder="Authors" required /></center>
+      <center><label>About</label></center>
+      <center><input type="text" placeholder="About the book" required /></center>
+      <center><label>Select an image:</label></center>
+      <center><input type="file" id="image" name="image" accept="image/*" /></center>
+      <center><button type="submit">Add Book</button></center>
     </form>
     <!-- FORM TO ADD NEW BOOK -->
   </body>
