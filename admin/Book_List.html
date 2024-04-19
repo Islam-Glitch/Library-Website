@@ -1,87 +1,48 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Store</title>
-    <link rel="stylesheet" href="/CSS/Style.CSS" />
+    <meta charset="UTF-8">
+    <meta name = "viewport" content="width=device-width,
+    initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://bootswatch.com/5/yeti/bootstrap.min.css">
   </head>
   <body>
-    <section>
-      <h3>Admin Panel</h3>
-      <h3><a href="adminhomepage.html">Home</a>
-    </section>
-    <!-- THE BOOK LIST -->
-    <table>
-      <thead>
-        <tr>
-          <th>Book Title</th>
-          <th>Category</th>
-          <th>Authors</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Sample books -->
-        <tr>
-          <td><a href="book1.html">Grant</a></td>
-          <td>Historical</td>
-          <td>Hamilton</td>
-          <td>
-            <button class="Edit-btn">Edit</button>  
-            <button class="delete-btn">Delete</button>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <a href="book2.html">تاريخ الإسلام ووفيات المشاهير والأعلام</a>
-          </td>
-          <td>Historical</td>
-          <td>شمس الدين الذهبي</td>
-          <td>
-            <button class="Edit-btn">Edit</button>  
-            <button class="delete-btn">Delete</button>
-          </td>
-        </tr>
-        <tr>
-          <td><a href="book3.html">الكامل في التاريخ</a></td>
-          <td>Historical</td>
-          <td>ابن الأثير</td>
-          <td>
-            <button class="Edit-btn">Edit</button>  
-            <button class="delete-btn">Delete</button>
-          </td>
-        </tr>
-        <tr>
-          <td><a href="book4.html">الطريق إلي القرآن</a></td>
-          <td>علوم إسلامية</td>
-          <td>إبراهيم بن عمر السكران</td>
-          <td>
-            <button class="Edit-btn">Edit</button>  
-            <button class="delete-btn">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <!-- THE BOOK LIST -->
-    <br />
 
-    <!-- FORM TO ADD NEW BOOK -->
-    <center><h3>Add new book</h3></center>
-    <form id="add-book">
-      <br />
-      <center><label>Book Title:</label></center>
-      <center><input type="text" id="book-title" placeholder="Book title" required /></center>
-      <center><label>Category</label></center>
-      <center><input type="text" placeholder="Category" required /></center>
-      <center><label>Authors</label></center>
-      <center><input type="text" placeholder="Authors" required /></center>
-      <center><label>About</label></center>
-      <center><input type="text" placeholder="About the book" required /></center>
-      <center><label>Select an image:</label></center>
-      <center><input type="file" id="image" name="image" accept="image/*" /></center>
-      <center><button type="submit">Add Book</button></center>
-    </form>
-    <!-- FORM TO ADD NEW BOOK -->
+    <div class="container mt-4">
+      <h1 class=" text-center"> Book List</h1>
+        <form id="book-form">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="category">Category</label>
+            <input type="text" id="category" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="author">Author</label>
+            <input type="text" id="author" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="image">Image</label>
+            <input type="file" id="image" class="form-control">
+          </div>          
+          <br>
+          <input type="submit" value="Add Book" class="btn btn-primary btn-block">
+        </form>
+        <table class="table table-striped mt-5">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Author</th>
+              <th>Action</th>
+            </tr>  
+          </thead>
+          <tbody id="book-list"></tbody>
+        </table>
+    </div>
+    <script src="script.js"></script>
   </body>
 </html>
