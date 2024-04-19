@@ -4,12 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quirky Quill</title>
-    <link rel="icon" type="image/x-icon" href="Material/NewOfficialLogo.png"> <link rel="stylesheet" href="CSS/Style.CSS" />
+    <link rel="icon" type="image/x-icon" href="Material/NewOfficialLogo.png" />
+    <link rel="stylesheet" href="CSS/Style.CSS" />
+    <script src="script.js"></script>
   </head>
   <body>
     <!--Navigation Bar-->
     <nav>
-      <a href="index.html"><img src="Material/OfficalLogo.png" alt="Logo"></a>
+      <a href="index.html"><img src="Material/OfficalLogo.png" alt="Logo" /></a>
       <h3><a href="Offers.html">Offers</a></h3>
       <h3><a href="index.html">Home Page</a></h3>
       <h3><a href="categories.html">Categories </a></h3>
@@ -20,78 +22,99 @@
     </nav>
     <!--Navigation Bar-->
     <br />
-
-    <form role="form" action="#" method="POST">
-      <Signup>
-        <center><label for="fullname"> Full Name </label></center>
-        <center>
-          <input
-            type="text"
-            name="fullname"
-            placeholder="Full Name"
-            required=""
-            autofocus=""
-            id="name-sign"
-          />
-        </center>
+    <form
+      id="form"
+      role="form"
+      action="#"
+      method="POST"
+      onsubmit="return validateForm()"
+    >
+      <div>
+        <label for="fullname">Full Name:</label>
+        <input
+          type="text"
+          name="fullname"
+          placeholder="Enter Your first and last name"
+          required
+          id="fullname"
+          oninput="validateFullNameInput()"
+        />
+        <span id="fullname-error" class="error"></span>
+      </div>
       <br />
 
-        <center><label for="username"> Username </label></center>
-        <center>
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            required=""
-            id="username-sign"
-          />
-        </center>
+      <div>
+        <label for="username">Username:</label>
+        <input
+          type="text"
+          name="username"
+          placeholder="Enter a username"
+          required
+          id="username"
+          oninput="validateUsernameInput()"
+        />
+        <span id="username-error" class="error"></span>
+      </div>
       <br />
 
-        <center><label for="email"> Email </label></center>
-        <center>
-          <input type="email" name="email" placeholder="Email" required="" />
-        </center>
+      <div>
+        <label for="email">Email:</label>
+        <input
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          required
+          id="email"
+          oninput="validateEmailInput()"
+        />
+        <span id="email-error" class="error"></span>
+      </div>
       <br />
 
-        <center><label for="password"> Password </label></center>
-        <center>
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            required=""
-            id="password-sign"
-          />
-        </center>
+      <div>
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          name="password"
+          placeholder="Enter a password"
+          required
+          id="password"
+          oninput="validatePasswordInput()"
+        />
+        <span id="password-error" class="error"></span>
+      </div>
       <br />
 
-        <center><label for="password"> Confirm Password </label></center>
-        <center>
-          <input
-            type="password"
-            name="password"
-            placeholder="Confirm Password"
-            required=""
-            id="confirmPassword-sign"
-          />
-        </center>
+      <div>
+        <label for="confirmPassword">Confirm Password:</label>
+        <input
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirm your password"
+          required
+          id="confirmPassword"
+          oninput="validateConfirmPasswordInput()"
+        />
+        <span id="confirmPassword-error" class="error"></span>
+      </div>
       <br />
 
-        <center>
-          <input type="checkbox" id="is_admin" name="is_admin" />
-          <label for="is_admin">Is Admin</label>
-        </center>
+      <div>
+        <input type="checkbox" id="is_admin" name="is_admin" />
+        <label for="is_admin">Are you an admin?</label>
+      </div>
       <br />
 
-        <center>
-          <button type="submit" id="submit-button">Submit</button>
-        </center>
-      </Signup>
+      <div>
+        <button type="submit" id="submit-button">Submit</button>
+        <button type="button" onclick="resetForm()">Reset</button>
+      </div>
       <br />
-      <!--<center><label>or</label></center> I think it is not necessary-->
+
       <center>
-        <label><a href="Login.html">Have an account? Login</a></label>
+        <label
+          ><a href="Login.html">Already have an account? Login here.</a></label
+        >
       </center>
     </form>
   </body>
