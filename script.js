@@ -464,24 +464,29 @@ function searchAndDisplayBookDetails(bookName) {
     }
 
 
-// Function to check out a book if available.
-function checkOutBook(bookId) {
-
+// fucntion to checout the book and test if you are a menber or not ,,,,,,,,,...............
+function checkOutBook(bookId, isMember){
   const book = localStorage.find(book => book.id === bookId);
+
   if (book) {
-      if (book.available) {
-          book.available = false;
-          console.log("Book checked out successfully.");
+    if (book.available) {
+      if (isMember) {
+        book.available = false;
+        console.log("Book checked out successfully.");
       } 
       else {
-          console.log("Book is not available for checkout.");
+        console.log("Only members can check out books.");
       }
+    } 
+    else {
+      console.log("Book is not available for checkout.");
+    }
   } 
-  
   else {
-      console.log("Book not found.");
+    console.log("Book not found.");
   }
 }
+
 
 
 //  and this Function to return a book 
