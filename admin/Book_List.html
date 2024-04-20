@@ -4,45 +4,54 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quirky Quill</title>
-    <link rel="icon" type="image/x-icon" href="Material/NewOfficialLogo.png">
+    <link rel="icon" type="image/x-icon" href="Material/NewOfficialLogo.png" />
     <link rel="stylesheet" href="../CSS/Style.CSS" />
   </head>
 
   <body>
-
     <div class="container mt-4">
-      <h1 class=" text-center"> Book List</h1>
-        <form id="book-form">
-          <div class="form-group">
-            <label for="title">Title</label>
-            <input type="text" id="title" class="form-control">
-          </div>
-          <div class="form-group">
-            <label for="category">Category</label>
-            <input type="text" id="category" class="form-control">
-          </div>
-          <div class="form-group">
-            <label for="author">Author</label>
-            <input type="text" id="author" class="form-control">
-          </div>
-          <div class="form-group">
-            <label for="image">Image</label>
-            <input type="file" id="image" class="form-control">
-          </div>          
-          <br>
-          <input type="submit" value="Add Book" class="btn btn-primary btn-block">
-        </form>
-        <table class="table table-striped mt-5">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Category</th>
-              <th>Author</th>
-              <th>Action</th>
-            </tr>  
-          </thead>
-          <tbody id="book-list"></tbody>
-        </table>
+      <h1 class="text-center">Book List</h1>
+      <form id="book-form">
+        <div class="form-group">
+          <center><label for="title">Title</label></center>
+          <center><input type="text" id="title" class="form-control" /></center>
+        </div>
+        <div class="form-group">
+          <center><label for="category">Category</label></center>
+          <center>
+            <input type="text" id="category" class="form-control" />
+          </center>
+        </div>
+        <div class="form-group">
+          <center><label for="author">Author</label></center>
+          <center>
+            <input type="text" id="author" class="form-control" />
+          </center>
+        </div>
+        <div class="form-group">
+          <center><label for="image">Image</label></center>
+          <center><input type="file" id="image" class="form-control" /></center>
+        </div>
+        <br />
+        <center>
+          <input
+            type="submit"
+            value="Add Book"
+            class="btn btn-primary btn-block"
+          />
+        </center>
+      </form>
+      <table class="table table-striped mt-5">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Author</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="book-list"></tbody>
+      </table>
     </div>
     <script src="script.js"></script>
   </body>
