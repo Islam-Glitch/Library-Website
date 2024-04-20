@@ -362,3 +362,73 @@ function validateConfirmPasswordInput() {
     confirmPasswordError.textContent = "";
   }
 }
+function handleSignupFormSubmission() {
+  var isValid = validateForm(); // Perform form validation
+
+  if (isValid) {
+    var fullname = document.getElementById("fullname").value.trim();
+    var username = document.getElementById("username").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var password = document.getElementById("password").value.trim();
+    var isAdmin = document.getElementById("is_admin").checked; // Check if admin checkbox is checked
+
+    // Create a user object
+    var user = {
+      fullname: fullname,
+      username: username,
+      email: email,
+      password: password,
+    };
+
+    // Store the user object in local storage based on admin status
+    if (isAdmin) {
+      localStorage.setItem("admin", JSON.stringify(user)); // Store as admin
+    } else {
+      localStorage.setItem("user", JSON.stringify(user)); // Store as regular user
+    }
+
+    // Optionally, you can redirect the user to the login page after signup
+    window.location.href = "Login.html";
+  }
+
+  // Ensure the form submission is prevented if validation fails
+  return isValid;
+}
+
+function handleLogin(userType) {
+  var enteredUsername = document.getElementById("username-bar").value.trim();
+  var enteredPassword = document.getElementById("password-bar").value.trim();
+
+  // Check if the entered credentials match with user credentials
+  if (userType === "user") {
+    var user = JSON.parse(localStorage.getItem("user"));
+    if (
+      user &&
+      enteredUsername === user.username &&
+      enteredPassword === user.password
+    ) {
+      alert("Login as user successful!");
+      window.location.href = "index.html"; // Redirect to user page
+      return;
+    }
+  }
+
+  // Check if the entered credentials match with admin credentials
+  if (userType === "admin") {
+    var admin = JSON.parse(localStorage.getItem("admin"));
+    if (
+      admin &&
+      enteredUsername === admin.username &&
+      enteredPassword === admin.password
+    ) {
+      alert("Login as admin successful!");
+      window.location.href = "admin/adminhomepage.html"; // Redirect to admin page
+      return;
+    }
+  }
+
+  // If no user or admin found or invalid credentials
+  else {
+    alert("Check the user type , password or username");
+  }
+}

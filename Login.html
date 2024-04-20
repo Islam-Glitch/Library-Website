@@ -6,6 +6,7 @@
     <title>Quirky Quill</title>
     <link rel="icon" type="image/x-icon" href="Material/NewOfficialLogo.png" />
     <link rel="stylesheet" href="CSS/Style.CSS" />
+    <script src="script.js"></script>
   </head>
   <body>
     <!--Navigation Bar-->
@@ -37,25 +38,25 @@
       </div>
       <br />
       <div>
-        <center><label>password</label></center>
+        <center><label>Password</label></center>
         <center>
           <input
             type="password"
             id="password-bar"
             required
-            placeholder="password"
+            placeholder="Password"
             name="password"
           />
         </center>
       </div>
       <br />
       <center>
-        <a href="/admin/adminhomepage.html"
-          ><button type="submit" id="submit-button">Login as admin</button></a
-        >
-        <a href="index.html">
-          <button type="submit" id="submit-button">Login as user</button></a
-        >
+        <button type="button" onclick="handleLogin('user')">
+          Login as User
+        </button>
+        <button type="button" onclick="handleLogin('admin')">
+          Login as Admin
+        </button>
       </center>
     </form>
   </body>
