@@ -178,7 +178,16 @@ td {
   width: 150px;
   background-color: white;
 }
-.error {
-  color: red;
-  font-size: medium;
+a .image:hover {
+  transition: transform 0.3s ease;
+  opacity: 0.7;
+  transform: scale(1.1);
+  cursor: pointer;
+}
+.home {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  padding: 40px;
 }
