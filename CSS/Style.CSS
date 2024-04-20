@@ -2,14 +2,16 @@ nav {
   align-items: center; /*Aligns logo vertically in navbar*/
   background-color: white; /* Optional background color */
   display: flex;
-  width: fit-content;
+  width: 100%;
+  /* justify-content: center; */
+  justify-content: space-between;
   height: 80px;
   border-radius: 20px;
   margin: 100 0;
 }
 
 /*links*/
-a{
+a {
   text-decoration: none;
 }
 
@@ -18,8 +20,6 @@ nav img {
   max-height: 100px; /* Adjust to your desired maximum height */
   line-height: 0px;
 }
-
-
 
 nav a {
   margin: 0 10px;
@@ -32,7 +32,7 @@ nav h3 a {
 
 /*Navigation Bar Style*/
 
- /*Form Style*/
+/*Form Style*/
 form {
   border: 4px solid #ccc;
   margin: auto;
@@ -42,23 +42,24 @@ form {
   border-radius: 20px;
 }
 
-form div label{
+form div label {
   color: black;
 }
 
-form center label a{
+form center label a {
   color: black;
 }
 
-form center label{
+form center label {
   color: black;
 }
- /*Form Style*/
+/*Form Style*/
 
 /*Search bar Style*/
 #search-bar {
-  margin:auto;
-  width: 200px;
+  margin: auto;
+  width: 300px;
+  height: 35px;
   padding: 5px;
   border: 1px solid #ccc;
 }
@@ -67,6 +68,7 @@ form center label{
 /* cove page  */
 body {
   background-image: url("../Material/OfficialBackground.jpg");
+  backdrop-filter: blur(5px);
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
