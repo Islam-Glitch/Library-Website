@@ -4,51 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quirky Quill</title>
-    <link rel="icon" type="image/x-icon" href="/Material/NewOfficialLogo.png" />
+    <link rel="icon" type="image/x-icon" href="Material/NewOfficialLogo.png" />
     <link rel="stylesheet" href="../CSS/Style.CSS" />
+    <script src="../script.js"></script>
   </head>
-  
+
   <body>
     <section>
       <h3>Admin Panel</h3>
-      <h3><a href="adminhomepage.html">Home</a>
+      <h3><a href="adminhomepage.html">Home</a></h3>
     </section>
 
     <!-- THE users LIST -->
-    <!--  -->
     <table id="users-table">
       <thead>
         <tr>
           <th>ID</th>
+          <th>Full Name</th>
           <th>Username</th>
           <th>Password</th>
           <th>Email</th>
           <th>Action</th>
         </tr>
       </thead>
-      <tbody>
-        <!-- Sample users -->
-        <tr>
-          <td>1</td>
-          <td>TarekMohamed</td>
-          <td>12345</td>
-          <td>Tarek@gmail.com</td>
-          <td>
-            <button class="delete-btn">Delete</button>
-          </td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Islam</td>
-          <td>1233456</td>
-          <td>Islam@gmail.com</td>
-          <td>
-            <button class="delete-btn">Delete</button>
-          </td>
-        </tr>
-      </tbody>
+      <tbody></tbody>
     </table>
-    <!-- THE User LIST -->
+
     <br />
+    <script>
+      populateUsersTable();
+    </script>
   </body>
 </html>

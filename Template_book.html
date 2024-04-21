@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Information</title>
+    <link rel="stylesheet" href="CSS/Style.CSS" />
+  </head>
+  <body>
+    <nav>
+      <a href="index.html"><img src="Material/OfficalLogo.png" alt="Logo" /></a>
+      <h3><a href="index.html">Home Page</a></h3>
+      <!-- Add other navigation links if needed -->
+    </nav>
+
+    <div id="book-info">
+      <!-- Book information will be displayed here dynamically -->
+    </div>
+
+    <button id="borrow-btn">Borrow this book</button>
+
+    <script>
+      window.onload = function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const title = urlParams.get("title");
+
+        // Retrieve book information from local storage
+        const books = JSON.parse(localStorage.getItem("books"));
+        const book = books.find((b) => b.title === title);
+
+        if (book) {
+          const bookInfo = `
+                    <h2>${book.title}</h2>
+                    <p><strong>Category:</strong> ${book.category}</p>
+                    <p><strong>Author:</strong> ${book.author}</p>
+                    <p><strong>Description:</strong> ${book.description}</p>
+                `;
+          document.getElementById("book-info").innerHTML = bookInfo;
+        } else {
+          document.getElementById("book-info").innerHTML =
+            "<p>Book not found.</p>";
+        }
+
+        document
+          .getElementById("borrow-btn")
+          .addEventListener("click", function () {
+            // Retrieve borrowed books from local storage
+            let borrowedBooks =
+              JSON.parse(localStorage.getItem("borrowedBooks")) || [];
+            // Add the current book to the borrowed books list
+            borrowedBooks.push(book);
+            // Store the updated borrowed books list in local storage
+            localStorage.setItem(
+              "borrowedBooks",
+              JSON.stringify(borrowedBooks)
+            );
+            // Redirect to Borrow_book.html
+            window.location.href = "Borrow_book.html";
+          });
+      };
+    </script>
+  </body>
+</html>

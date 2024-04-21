@@ -4,17 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quirky Quill</title>
-    <link rel="icon" type="image/x-icon" href="Material/NewOfficialLogo.png"> <link rel="stylesheet" href="CSS/Style.CSS" />
-
+    <link rel="icon" type="image/x-icon" href="Material/NewOfficialLogo.png" />
+    <link rel="stylesheet" href="CSS/Style.CSS" />
   </head>
   <body>
     <!--Navigation Bar-->
     <nav>
-      <a href="index.html"><img src="Material/OfficalLogo.png" alt="Logo"></a>
+      <a href="index.html"><img src="Material/OfficalLogo.png" alt="Logo" /></a>
       <h3><a href="index.html">Home Page</a></h3>
       <h3><a href="categories.html">Categories </a></h3>
       <h3><a href="book.html">Book List</a></h3>
-      <h3><a href="Request_book.html">Request Book</a></h3>
+      <h3><a href="Borrow_book.html">Borrow Book</a></h3>
       <h3><a href="Login.html">Login</a></h3>
       <h3><a href="Signup.html">Register</a></h3>
     </nav>
@@ -31,29 +31,103 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Sample books -->
-        <tr>
-          <td><a href="book.html">Book 1</a></td>
-          <td>Category 1</td>
-          <td>Tarek</td>
-          <td>
-            <button class="delete-btn">Remove</button>
-          </td>
-        </tr>
-        <tr>
-          <td><a href="book.html">Book 2</a></td>
-          <td>Category 2</td>
-          <td>Tarek</td>
-          <td>
-            <button class="delete-btn">Remove</button>
-          </td>
-        </tr>
+        <!-- Borrowed books will be added dynamically here -->
       </tbody>
     </table>
-    <!-- THE BOOK LIST -->
-    <br />
-    <button type="submit"><a href="book.html">Add Another Book</a></button>
-    <br />
-    <button type="submit"><a href="confirm.html">Confirm</a></button>
+
+    <button id="confirm-btn">Confirm</button>
+    <button id="add-book-btn">Add Another Book</button>
+
+    <script>
+      window.onload = function () {
+        // Function to add a new row for a book
+        function addBookToTable(book) {
+          // Check if the book is already in the table
+          const existingBook = document.querySelector(
+            `#book-table tbody tr[data-title="${book.title}"]`
+          );
+          if (existingBook) return; // If book exists, do not add it again
+
+          const newRow = document.createElement("tr");
+          newRow.setAttribute("data-title", book.title);
+          newRow.innerHTML = `
+            <td>${book.title}</td>
+            <td>${book.category}</td>
+            <td>${book.author}</td>
+            <td>
+              <button class="delete-btn" data-title="${book.title}">Remove</button>
+            </td>
+          `;
+          document.querySelector("#book-table tbody").appendChild(newRow);
+        }
+
+        // Function to remove a book from the table and update local storage
+        function removeBook(event) {
+          const row = event.target.closest("tr");
+          const title = row.querySelector("td:first-child").textContent;
+          row.remove();
+          // Remove the book from local storage
+          let borrowedBooks =
+            JSON.parse(localStorage.getItem("borrowedBooks")) || [];
+          borrowedBooks = borrowedBooks.filter((book) => book.title !== title);
+          localStorage.setItem("borrowedBooks", JSON.stringify(borrowedBooks));
+        }
+
+        // Add event listener to delete buttons
+        document.addEventListener("click", function (event) {
+          if (event.target.classList.contains("delete-btn")) {
+            removeBook(event);
+          }
+        });
+
+        // Confirm button redirects to confirm.html
+        document
+          .getElementById("confirm-btn")
+          .addEventListener("click", function () {
+            window.location.href = "confirm.html";
+          });
+
+        // Add another book button redirects to index.html
+        document
+          .getElementById("add-book-btn")
+          .addEventListener("click", function () {
+            window.location.href = "index.html";
+          });
+
+        // Retrieve borrowed book information from local storage
+        const borrowedBooks =
+          JSON.parse(localStorage.getItem("borrowedBooks")) || [];
+        borrowedBooks.forEach((book) => {
+          addBookToTable(book);
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const title = urlParams.get("title");
+
+        // Retrieve book information from local storage
+        const books = JSON.parse(localStorage.getItem("books"));
+        const book = books.find((b) => b.title === title);
+
+        if (book) {
+          // Check if the book is already borrowed
+          const isBookBorrowed = borrowedBooks.some((b) => b.title === title);
+          if (isBookBorrowed) {
+            alert("This book is already borrowed!");
+            return;
+          }
+
+          // Add the current book to the borrowed books list
+          borrowedBooks.push(book);
+
+          // Store the updated borrowed books list  in local storage
+          localStorage.setItem("borrowedBooks", JSON.stringify(borrowedBooks));
+
+          // Add the book to the table
+          addBookToTable(book);
+        } else {
+          alert("Book not found.");
+        }
+      };
+    </script>
   </body>
 </html>
