@@ -194,3 +194,8 @@ a .image:hover {
   gap: 40px;
   padding: 40px;
 }
+
+span {
+  color: red;
+  font-size: medium;
+}
