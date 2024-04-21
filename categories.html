@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<head>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,52 +8,80 @@
     <link rel="icon" type="image/x-icon" href="Material/NewOfficialLogo.png" />
     <link rel="stylesheet" href="CSS/Style.CSS" />
   </head>
-  <body>
-    <!--Navigation Bar-->
-    <nav id = "navigation">
-      <a href="index.html"><img src="Material/OfficalLogo.png" alt="Logo" /></a>
-      <h3><a href="index.html">Home Page</a></h3>
-      <h3><a href="categories.html">Categories </a></h3>
-      <h3><a href="Borrow_book.html">Borrow Book</a></h3>
-      <h3><a href="Login.html">Login</a></h3>
-      <h3><a href="Signup.html">Register</a></h3>
-    </nav>
-      <script src="script.js"></script>
-    <script>
-  updateNavBar();
-</script>
-    <!--Navigation Bar-->
-    <br />
-    <!--Search Bar-->
-    <SearchBar>
-      <input
-        type="text"
-        name="Search"
-        id="search-bar"
-        placeholder="Search Books"
-      />
-      <button type="submit">Search</button>
-    </SearchBar>
-    <!--Search Bar-->
+  <title>Book Categories</title>
+</head>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  #category-list {
+    list-style-type: none;
+    padding: 0;
+    text-align: center; 
+    font-size: 30px; 
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+  }
+  #category-list li {
+    margin: 20px; 
+    padding: 15px;
+    cursor: pointer;
+  }
+  #category-list li:hover {
+    color:cadetblue; 
+  }
+</style>
+<body>
+  <nav>
+    <a href="index.html"><img src="Material/OfficalLogo.png" alt="Logo" /></a>
+    <h3><a href="index.html">Home Page</a></h3>
+    <h3><a href="categories.html">Categories </a></h3>
+    <h3><a href="Borrow_book.html">Borrow Book</a></h3>
+    <h3><a href="Login.html">Login</a></h3>
+    <h3><a href="Signup.html">Register</a></h3>
+  </nav>
+  <!--Navigation Bar-->
+  <br />
+  <!--Search Bar-->
+  <SearchBar>
+    <input
+      type="text"
+      name="Search"
+      id="search-bar"
+      placeholder="Search Books"
+    />
+    <button type="submit">Search</button>
+  </SearchBar>
 
-    <h1>Categories</h1>
-    <!--  -->
-    <div class="container">
-      <div class="categories">
-        <a href="index.html"><h2>History</h2></a>
-        <a href="index.html"><h2>Fantasy</h2></a>
-      </div>
-      <div class="categories">
-        <a href="index.html"><h2>Mystery</h2></a>
-        <a href="index.html"><h2>Adventure</h2></a>
-      </div>
-      <div class="categories">
-        <a href="index.html"><h2>تاريخ</h2></a>
-        <a href="index.html"><h2>الفقه</h2></a>
-      </div>
-      <div class="categories">
-        <a href="index.html"><h2>الإسلام</h2></a>
-      </div>
-    </div>
-  </body>
+  <!-- List to display categories -->
+  <ul id="category-list">
+    <!-- Categories will be dynamically added here -->
+  </ul>
+
+  <script>
+    class UI {
+      static displayBooks() {
+        const books = JSON.parse(localStorage.getItem("books"));
+        const categories = books.map(book => book.category);
+        const categoriesSet = new Set(categories);
+        const uniqueCategories = [...categoriesSet];
+        UI.renderCategories(uniqueCategories);
+      }
+      static renderCategories(categories) {
+        const categoryList = document.querySelector("#category-list");
+        categories.forEach(category => {
+          const listItem = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = "Template_Category.html?category=" + encodeURIComponent(category);
+          link.textContent = category;
+          listItem.appendChild(link);
+          categoryList.appendChild(listItem);
+        });
+      }
+    }
+    document.addEventListener("DOMContentLoaded", UI.displayBooks);
+  </script>
+</body>
 </html>
+

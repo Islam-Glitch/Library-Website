@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quirky Quill</title>
+  <link rel="icon" type="image/x-icon" href="Material/NewOfficialLogo.png" />
+  <link rel="stylesheet" href="CSS/Style.CSS" />
+  <style>
+    /* Style for the book list */
+#book-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* Align books to the start of the flex container */
+  list-style-type: none;
+  padding: 0;
+}
+
+/* Style for each book item */
+.book-item {
+  flex: 0 0 30%; /* Each book item takes up 30% of the container width */
+  margin: 10px;
+  text-align: center;
+}
+
+/* Style for the book image */
+.book-image {
+  width: 100%; /* Ensure the image fills its container */
+}
+
+/* Style for the book title */
+.book-title {
+  margin-top: 5px;
+}
+
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav>
+    <a href="index.html"><img src="Material/OfficalLogo.png" alt="Logo" /></a>
+    <h3><a href="index.html">Home Page</a></h3>
+    <h3><a href="categories.html">Categories</a></h3>
+    <h3><a href="Borrow_book.html">Borrow Book</a></h3>
+    <h3><a href="Login.html">Login</a></h3>
+    <h3><a href="Signup.html">Register</a></h3>
+  </nav>
+  <!-- Navigation Bar -->
+
+  <!-- Display Book Titles -->
+  <ul id="book-list">
+    <!-- Book titles will be dynamically added here -->
+  </ul>
+
+  
+  <script>
+    
+    function getBooksByCategory(category) {
+      const books = JSON.parse(localStorage.getItem("books")) || [];
+      return books.filter(book => book.category === category);
+    }
+
+    
+    function displayBook(category) {
+      const books = getBooksByCategory(category);
+      const bookList = document.getElementById("book-list");
+      bookList.innerHTML = ""; // Clear previous entries
+
+      books.forEach(book => {
+        const listItem = document.createElement("li");
+        
+        // Create an image element
+        const image = document.createElement("img");
+        image.src = book.image; // Set the image source
+        
+        // Create a text node for the book title
+        const titleNode = document.createTextNode(book.title);
+        
+        // Append the image and title to the list item
+        listItem.appendChild(image);
+        listItem.appendChild(titleNode);
+        
+        bookList.appendChild(listItem);
+      });
+    }
+
+    //get the category from the url parameter in categories.html page
+    const url = new URLSearchParams(window.location.search);
+    const category = url.get("category");
+
+    // display book for the selected category
+    displayBook(category);
+  </script>
+</body>
+</html>
