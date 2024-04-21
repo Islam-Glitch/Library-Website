@@ -432,32 +432,55 @@ function handleLogin(userType) {
   }
 }
 
-// this functoin for search with book name or book author and display the data.
-function searchAndDisplayBookDetails(bookName) {
-  const query = bookName.toLowerCase();
-  const results = localStorage.filter((book) => {
-    return (
-      book.title.toLowerCase().includes(query) ||
-      book.author.toLowerCase().includes(query)
-    );
-  });
+// Function to search and view data
+function searchAndPrintData(query) {
+  const books = Store.getBooks();
 
-  if (results.length > 0) {
-    results.forEach((book) => {
-      console.log("Title:", book.title);
 
-      console.log("Author:", book.author);
+  const filteredBooks = books.filter((book) =>
+    book.title.toLowerCase().includes(query.toLowerCase())
+  );
 
-      console.log("Pages:", book.pages);
+  if (filteredBooks.length > 0) {
+    let bookInfo = "";
 
-      console.log("Price:", book.price);
-
-      console.log("\n");
+    
+    filteredBooks.forEach((book) => {
+      bookInfo += `
+        Title: ${book.title}
+        Category: ${book.category}
+        Author: ${book.author}
+        Description: ${book.description || "N/A"}
+        
+      `;
     });
+
+    
+    const printWindow = window.open("", "_blank");
+
+    
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Search Results</title>
+        </head>
+        <body>
+          <h1>Search Results</h1>
+          <pre>${bookInfo}</pre>
+        </body>
+      </html>
+    `);
+
+    
+    printWindow.document.close();
+    printWindow.print();
+    printWindow.close();
   } else {
-    console.log("Book not found.");
+    alert("No books found.");
   }
 }
+
+
 
 // fucntion to checout the book and test if you are a menber or not ,,,,,,,,,...............
 function checkOutBook(bookId, isMember) {
