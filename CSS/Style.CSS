@@ -183,6 +183,13 @@ a .image:hover {
   transform: scale(1.1);
   cursor: pointer;
 }
+a h2:hover {
+  transition: transform 0.3s ease;
+  opacity: 0.7;
+  transform: scale(1.1);
+  cursor: pointer;
+  color: rgb(207, 131, 32);
+}
 
 /* logo */
 a .logo {
