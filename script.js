@@ -1,9 +1,10 @@
 // Book Class: Represents a book
 class Book {
-  constructor(title, category, author) {
+  constructor(title, category, author, description) {
     this.title = title;
     this.category = category;
     this.author = author;
+    this.description = description;
   }
 }
 
@@ -21,6 +22,7 @@ class UI {
       <td>${book.title}</td>
       <td>${book.category}</td>
       <td>${book.author}</td>
+      <td>${book.description}</td>
       <td>
         <a href="#" class="btn btn-danger btn-sm delete">Delete</a>
         <a href="#" class="btn btn-primary btn-sm edit">Edit</a>
@@ -65,6 +67,7 @@ class UI {
       title: cells[0].textContent,
       category: cells[1].textContent,
       author: cells[2].textContent,
+      description: cells[3].textContent,
     };
 
     const rowIndex = row.rowIndex - 1; // Adjust index for header row
@@ -88,6 +91,7 @@ class UI {
     document.querySelector("#title").value = "";
     document.querySelector("#category").value = "";
     document.querySelector("#author").value = "";
+    document.querySelector("#description").value = "";
   }
 }
 
@@ -134,14 +138,15 @@ document.querySelector("#book-form").addEventListener("submit", (e) => {
   const title = document.querySelector("#title").value;
   const category = document.querySelector("#category").value; // Update this line
   const author = document.querySelector("#author").value;
+  const description = document.querySelector("#description").value;
 
   // Validate
-  if (title === "" || category === "" || author === "") {
+  if (title === "" || category === "" || author === "" || description === "") {
     // Update this line
     UI.showAlert("Please fill in all fields", "danger");
   } else {
     // Instantiate book
-    const book = new Book(title, category, author); // Update this line
+    const book = new Book(title, category, author, description); // Update this line
 
     // Add Book to UI
     UI.addBookToList(book);
@@ -176,7 +181,6 @@ document.querySelector("#book-list").addEventListener("click", (e) => {
     UI.saveBook(e.target);
   }
 });
-
 //Form validations
 function validateForm() {
   var fullname = document.getElementById("fullname").value;
@@ -372,20 +376,23 @@ function handleSignupFormSubmission() {
     var password = document.getElementById("password").value.trim();
     var isAdmin = document.getElementById("is_admin").checked; // Check if admin checkbox is checked
 
+    // Retrieve existing users or initialize an empty array
+    var users = JSON.parse(localStorage.getItem("users")) || [];
+
     // Create a user object
     var user = {
       fullname: fullname,
       username: username,
       email: email,
       password: password,
+      isAdmin: isAdmin, // Include isAdmin flag in the user object
     };
 
-    // Store the user object in local storage based on admin status
-    if (isAdmin) {
-      localStorage.setItem("admin", JSON.stringify(user)); // Store as admin
-    } else {
-      localStorage.setItem("user", JSON.stringify(user)); // Store as regular user
-    }
+    // Push the user object to the array of users
+    users.push(user);
+
+    // Store the updated array of users in local storage
+    localStorage.setItem("users", JSON.stringify(users));
 
     // Optionally, you can redirect the user to the login page after signup
     window.location.href = "Login.html";
@@ -433,79 +440,111 @@ function handleLogin(userType) {
   }
 }
 
-
 // this functoin for search with book name or book author and display the data.
 function searchAndDisplayBookDetails(bookName) {
-  const query = bookName.toLowerCase(); 
-  const results = localStorage.filter(book => {
-      return book.title.toLowerCase().includes(query) || book.author.toLowerCase().includes(query);
-  }
-   );
+  const query = bookName.toLowerCase();
+  const results = localStorage.filter((book) => {
+    return (
+      book.title.toLowerCase().includes(query) ||
+      book.author.toLowerCase().includes(query)
+    );
+  });
 
   if (results.length > 0) {
-      results.forEach(book => {
-    
-        console.log("Title:", book.title); 
+    results.forEach((book) => {
+      console.log("Title:", book.title);
 
-          console.log("Author:", book.author);
+      console.log("Author:", book.author);
 
-          console.log("Pages:", book.pages);
+      console.log("Pages:", book.pages);
 
-          console.log("Price:",book.price);
+      console.log("Price:", book.price);
 
-          console.log("\n");
-    }
-      );
-        } 
-  
-  else {
-      console.log("Book not found.");
+      console.log("\n");
+    });
+  } else {
+    console.log("Book not found.");
   }
-    }
-
+}
 
 // fucntion to checout the book and test if you are a menber or not ,,,,,,,,,...............
-function checkOutBook(bookId, isMember){
-  const book = localStorage.find(book => book.id === bookId);
+function checkOutBook(bookId, isMember) {
+  const book = localStorage.find((book) => book.id === bookId);
 
   if (book) {
     if (book.available) {
       if (isMember) {
         book.available = false;
         console.log("Book checked out successfully.");
-      } 
-      else {
+      } else {
         console.log("Only members can check out books.");
       }
-    } 
-    else {
+    } else {
       console.log("Book is not available for checkout.");
     }
-  } 
-  else {
+  } else {
     console.log("Book not found.");
   }
 }
 
-
-
-//  and this Function to return a book 
+//  and this Function to return a book
 function returnBook(bookId) {
-
-  const book = localStorage.find(book => book.id === bookId);
+  const book = localStorage.find((book) => book.id === bookId);
 
   if (book) {
     if (!book.available) {
-         book.available = true;
-         console.log("Book returned successfully.");
-      } 
-    else {
-         console.log("Book is already available.");
-      }
-
+      book.available = true;
+      console.log("Book returned successfully.");
+    } else {
+      console.log("Book is already available.");
     }
-   else {
-      console.log("Book not found.");
-     }
-} 
- 
+  } else {
+    console.log("Book not found.");
+  }
+}
+
+function populateUsersTable() {
+  var users = JSON.parse(localStorage.getItem("users")) || []; // Retrieve users from local storage or initialize an empty array
+
+  var tableBody = document.querySelector("#users-table tbody");
+
+  // Clear the table before populating it with new data
+  tableBody.innerHTML = "";
+
+  users.forEach(function (user, index) {
+    if (!user.isAdmin) {
+      // Check if user is not admin
+      var row = tableBody.insertRow();
+
+      // Insert cells with user data
+      row.insertCell(0).textContent = index + 1; // ID
+      row.insertCell(1).textContent = user.fullname; // Full Name
+      row.insertCell(2).textContent = user.username; // Username
+      row.insertCell(3).textContent = user.password; // Password
+      row.insertCell(4).textContent = user.email; // Email
+
+      // Create delete button
+      var deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "Delete";
+      deleteBtn.addEventListener("click", function () {
+        deleteUser(index);
+      });
+
+      // Insert delete button into action cell
+      var actionCell = row.insertCell(5);
+      actionCell.appendChild(deleteBtn);
+    }
+  });
+}
+
+function deleteUser(index) {
+  var users = JSON.parse(localStorage.getItem("users")); // Retrieve users from local storage
+
+  if (users && users.length > index) {
+    users.splice(index, 1); // Remove user from array
+    localStorage.setItem("users", JSON.stringify(users)); // Update local storage
+
+    // Repopulate table
+    populateUsersTable();
+  }
+}
