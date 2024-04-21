@@ -423,6 +423,7 @@ function handleLogin(userType) {
     if (userType === "admin") {
       alert("Login as admin successful!");
       window.location.href = "admin/adminhomepage.html"; // Redirect to admin page
+      logsuc = true;
     } else {
       alert("Login as user successful!");
       window.location.href = "index.html"; // Redirect to user page
