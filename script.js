@@ -543,3 +543,24 @@ function deleteUser(index) {
     populateUsersTable();
   }
 }
+
+//update the nav bar
+function updateNavBar(logsuc) {
+  const nav = document.querySelector('nav');
+
+  if (logsuc) {
+    
+    const loginLink = nav.querySelector('h3 a[href="Login.html"]');
+    const signupLink = nav.querySelector('h3 a[href="Signup.html"]');
+    if (loginLink) loginLink.parentElement.remove();
+    if (signupLink) signupLink.parentElement.remove();
+
+    
+    const logoutLink = document.createElement('h3');
+    const logoutAnchor = document.createElement('a');
+    logoutAnchor.textContent = "Log out";
+    logoutAnchor.href = "#"; 
+    logoutLink.appendChild(logoutAnchor);
+    nav.appendChild(logoutLink);
+  }
+}
