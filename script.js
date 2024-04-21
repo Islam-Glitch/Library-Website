@@ -483,25 +483,18 @@ function searchAndPrintData(query) {
 
 
 
-// fucntion to checout the book and test if you are a menber or not ,,,,,,,,,...............
-function checkOutBook(bookId, isMember) {
-  const book = localStorage.find((book) => book.id === bookId);
+function canBorrowBook(logsuc) {
+  if (logsuc) {
+    window.location.href = "Borrow_book.html"; 
+    alert("You can borrow a book now!");
+  } 
+  else {
+  alert("go to login now please ");
+    window.location.href = "Login.html"; 
 
-  if (book) {
-    if (book.available) {
-      if (isMember) {
-        book.available = false;
-        console.log("Book checked out successfully.");
-      } else {
-        console.log("Only members can check out books.");
-      }
-    } else {
-      console.log("Book is not available for checkout.");
-    }
-  } else {
-    console.log("Book not found.");
   }
 }
+
 
 
 
