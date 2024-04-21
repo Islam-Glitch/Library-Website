@@ -502,21 +502,7 @@ function checkOutBook(bookId, isMember) {
   }
 }
 
-//  and this Function to return a book
-function returnBook(bookId) {
-  const book = localStorage.find((book) => book.id === bookId);
 
-  if (book) {
-    if (!book.available) {
-      book.available = true;
-      console.log("Book returned successfully.");
-    } else {
-      console.log("Book is already available.");
-    }
-  } else {
-    console.log("Book not found.");
-  }
-}
 
 function populateUsersTable() {
   var users = JSON.parse(localStorage.getItem("users")) || []; // Retrieve users from local storage or initialize an empty array
