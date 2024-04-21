@@ -402,7 +402,7 @@ function handleSignupFormSubmission() {
   // Ensure the form submission is prevented if validation fails
   return isValid;
 }
-
+var us = false; var ad = false;
 function handleLogin(userType) {
   var enteredUsername = document.getElementById("username-bar").value.trim();
   var enteredPassword = document.getElementById("password-bar").value.trim();
@@ -424,10 +424,11 @@ function handleLogin(userType) {
     if (userType === "admin") {
       alert("Login as admin successful!");
       window.location.href = "admin/adminhomepage.html"; // Redirect to admin page
-      
+      ad = true;
     } else {
       alert("Login as user successful!");
       window.location.href = "index.html"; // Redirect to user page
+      us = true
     }
   } else {
     alert("Invalid username or password");
@@ -484,8 +485,8 @@ function searchAndPrintData(query) {
 
 
 
-function canBorrowBook(isValid ) {
-  if (isValid ) {
+function canBorrowBook(isValid || us || ad ) {
+  if (isValid || us || ad ) {
     window.location.href = "Borrow_book.html"; 
     alert("You can borrow a book now!");
   } 
@@ -546,10 +547,10 @@ function deleteUser(index) {
 }
 
 //update the nav bar
-function updateNavBar(isValid ) {
+function updateNavBar(isValid || us || ad) {
   const nav = document.querySelector('nav');
 
-  if (isValid ) {
+  if (isValid || us || ad ) {
     
     const loginLink = nav.querySelector('h3 a[href="Login.html"]');
     const signupLink = nav.querySelector('h3 a[href="Signup.html"]');
