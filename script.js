@@ -406,37 +406,29 @@ function handleLogin(userType) {
   var enteredUsername = document.getElementById("username-bar").value.trim();
   var enteredPassword = document.getElementById("password-bar").value.trim();
 
-  // Check if the entered credentials match with user credentials
-  if (userType === "user") {
-    var user = JSON.parse(localStorage.getItem("user"));
-    if (
-      user &&
-      enteredUsername === user.username &&
-      enteredPassword === user.password
-    ) {
-      alert("Login as user successful!");
-      window.location.href = "index.html"; // Redirect to user page
-      return;
-    }
-  }
+  // Retrieve users from local storage
+  var users = JSON.parse(localStorage.getItem("users")) || [];
 
-  // Check if the entered credentials match with admin credentials
-  if (userType === "admin") {
-    var admin = JSON.parse(localStorage.getItem("admin"));
-    if (
-      admin &&
-      enteredUsername === admin.username &&
-      enteredPassword === admin.password
-    ) {
+  // Find the user in the array
+  var user = users.find(function (u) {
+    return (
+      u.username === enteredUsername &&
+      u.password === enteredPassword &&
+      ((userType === "admin" && u.isAdmin) ||
+        (userType === "user" && !u.isAdmin))
+    );
+  });
+
+  if (user) {
+    if (userType === "admin") {
       alert("Login as admin successful!");
       window.location.href = "admin/adminhomepage.html"; // Redirect to admin page
-      return;
+    } else {
+      alert("Login as user successful!");
+      window.location.href = "index.html"; // Redirect to user page
     }
-  }
-
-  // If no user or admin found or invalid credentials
-  else {
-    alert("Check the user type , password or username");
+  } else {
+    alert("Invalid username or password");
   }
 }
 
