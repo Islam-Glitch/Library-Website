@@ -485,7 +485,7 @@ function searchAndPrintData(query) {
 
 
 
-function canBorrowBook(isValid || us || ad ) {
+function canBorrowBook(isValid , us ,ad ) {
   if (isValid || us || ad ) {
     window.location.href = "Borrow_book.html"; 
     alert("You can borrow a book now!");
@@ -547,7 +547,7 @@ function deleteUser(index) {
 }
 
 //update the nav bar
-function updateNavBar(isValid || us || ad) {
+function updateNavBar(isValid , us , ad) {
   const nav = document.querySelector('nav');
 
   if (isValid || us || ad ) {
