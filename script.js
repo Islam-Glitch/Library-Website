@@ -401,7 +401,7 @@ function handleSignupFormSubmission() {
   // Ensure the form submission is prevented if validation fails
   return isValid;
 }
-
+var logsuc = false;
 function handleLogin(userType) {
   var enteredUsername = document.getElementById("username-bar").value.trim();
   var enteredPassword = document.getElementById("password-bar").value.trim();
@@ -426,6 +426,7 @@ function handleLogin(userType) {
     } else {
       alert("Login as user successful!");
       window.location.href = "index.html"; // Redirect to user page
+      logsuc = true;
     }
   } else {
     alert("Invalid username or password");
