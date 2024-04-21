@@ -1,10 +1,11 @@
 // Book Class: Represents a book
 class Book {
-  constructor(title, category, author, description) {
+  constructor(title, category, author, description, image) {
     this.title = title;
     this.category = category;
     this.author = author;
     this.description = description;
+    this.image = image;
   }
 }
 
@@ -29,71 +30,7 @@ class UI {
       </td>`;
     list.appendChild(row);
   }
-
-  static deleteBook(el) {
-    if (el.classList.contains("delete")) {
-      el.parentElement.parentElement.remove();
-    }
   }
-
-  static editBook(el) {
-    const row = el.parentElement.parentElement;
-    const cells = row.querySelectorAll("td:not(:last-child)"); // Exclude last cell with buttons
-
-    cells.forEach((cell) => {
-      const text = cell.textContent;
-      cell.innerHTML = `<input type="text" value="${text}">`;
-    });
-
-    el.textContent = "Save";
-    el.classList.remove("edit");
-    el.classList.add("save");
-  }
-
-  static saveBook(el) {
-    const row = el.parentElement.parentElement;
-    const cells = row.querySelectorAll("td:not(:last-child)"); // Exclude last cell with buttons
-
-    cells.forEach((cell) => {
-      const newValue = cell.querySelector("input").value;
-      cell.innerHTML = newValue;
-    });
-
-    el.textContent = "Edit";
-    el.classList.remove("save");
-    el.classList.add("edit");
-
-    const updatedBook = {
-      title: cells[0].textContent,
-      category: cells[1].textContent,
-      author: cells[2].textContent,
-      description: cells[3].textContent,
-    };
-
-    const rowIndex = row.rowIndex - 1; // Adjust index for header row
-    const books = Store.getBooks();
-    books[rowIndex] = updatedBook;
-    localStorage.setItem("books", JSON.stringify(books));
-  }
-
-  static showAlert(message, className) {
-    const div = document.createElement("div");
-    div.className = `alert alert-${className}`;
-    div.appendChild(document.createTextNode(message));
-    const container = document.querySelector(".container");
-    const form = document.querySelector("#book-form");
-    container.insertBefore(div, form);
-    // Vanish in 3 seconds
-    setTimeout(() => document.querySelector(".alert").remove(), 3000);
-  }
-
-  static clearFields() {
-    document.querySelector("#title").value = "";
-    document.querySelector("#category").value = "";
-    document.querySelector("#author").value = "";
-    document.querySelector("#description").value = "";
-  }
-}
 
 // Store Class: Handles Local Storage
 class Store {
@@ -113,11 +50,11 @@ class Store {
     localStorage.setItem("books", JSON.stringify(books));
   }
 
-  static removeBook(author) {
+  static removeBook(description) {
     const books = Store.getBooks();
 
     books.forEach((book, index) => {
-      if (book.author === author) {
+      if (book.description === description) {
         books.splice(index, 1);
       }
     });
@@ -181,6 +118,7 @@ document.querySelector("#book-list").addEventListener("click", (e) => {
     UI.saveBook(e.target);
   }
 });
+
 //Form validations
 function validateForm() {
   var fullname = document.getElementById("fullname").value;
@@ -366,9 +304,8 @@ function validateConfirmPasswordInput() {
     confirmPasswordError.textContent = "";
   }
 }
-  var isValid = validateForm();
 function handleSignupFormSubmission() {
- // Perform form validation
+  var isValid = validateForm(); // Perform form validation
 
   if (isValid) {
     var fullname = document.getElementById("fullname").value.trim();
@@ -402,7 +339,7 @@ function handleSignupFormSubmission() {
   // Ensure the form submission is prevented if validation fails
   return isValid;
 }
-var us = false; var ad = false;
+
 function handleLogin(userType) {
   var enteredUsername = document.getElementById("username-bar").value.trim();
   var enteredPassword = document.getElementById("password-bar").value.trim();
@@ -424,81 +361,77 @@ function handleLogin(userType) {
     if (userType === "admin") {
       alert("Login as admin successful!");
       window.location.href = "admin/adminhomepage.html"; // Redirect to admin page
-      ad = true;
     } else {
       alert("Login as user successful!");
       window.location.href = "index.html"; // Redirect to user page
-      us = true
     }
   } else {
     alert("Invalid username or password");
   }
 }
 
-// Function to search and view data
-function searchAndPrintData(query) {
-  const books = Store.getBooks();
+// this functoin for search with book name or book author and display the data.
+function searchAndDisplayBookDetails(bookName) {
+  const query = bookName.toLowerCase();
+  const results = localStorage.filter((book) => {
+    return (
+      book.title.toLowerCase().includes(query) ||
+      book.author.toLowerCase().includes(query)
+    );
+  });
 
+  if (results.length > 0) {
+    results.forEach((book) => {
+      console.log("Title:", book.title);
 
-  const filteredBooks = books.filter((book) =>
-    book.title.toLowerCase().includes(query.toLowerCase())
-  );
+      console.log("Author:", book.author);
 
-  if (filteredBooks.length > 0) {
-    let bookInfo = "";
+      console.log("Pages:", book.pages);
 
-    
-    filteredBooks.forEach((book) => {
-      bookInfo += `
-        Title: ${book.title}
-        Category: ${book.category}
-        Author: ${book.author}
-        Description: ${book.description || "N/A"}
-        
-      `;
+      console.log("Price:", book.price);
+
+      console.log("\n");
     });
-
-    
-    const printWindow = window.open("", "_blank");
-
-    
-    printWindow.document.write(`
-      <html>
-        <head>
-          <title>Search Results</title>
-        </head>
-        <body>
-          <h1>Search Results</h1>
-          <pre>${bookInfo}</pre>
-        </body>
-      </html>
-    `);
-
-    
-    printWindow.document.close();
-    printWindow.print();
-    printWindow.close();
   } else {
-    alert("No books found.");
+    console.log("Book not found.");
   }
 }
 
+// fucntion to checout the book and test if you are a menber or not ,,,,,,,,,...............
+function checkOutBook(bookId, isMember) {
+  const book = localStorage.find((book) => book.id === bookId);
 
-
-function canBorrowBook(isValid , us ,ad ) {
-  if (isValid || us || ad ) {
-    window.location.href = "Borrow_book.html"; 
-    alert("You can borrow a book now!");
-  } 
-  else {
-  alert("go to login now please ");
-    window.location.href = "Login.html"; 
-
+  if (book) {
+    if (book.available) {
+      if (isMember) {
+        book.available = false;
+        console.log("Book checked out successfully.");
+      } else {
+        console.log("Only members can check out books.");
+      }
+    } else {
+      console.log("Book is not available for checkout.");
+    }
+  } else {
+    console.log("Book not found.");
   }
 }
 
+//  and this Function to return a book
+function returnBook(bookId) {
+  const book = localStorage.find((book) => book.id === bookId);
 
-
+  if (book) {
+    if (!book.available) {
+      book.available = true;
+      console.log("Book returned successfully.");
+    } else {
+      console.log("Book is already available.");
+    }
+  } else {
+    console.log("Book not found.");
+  }
+}
 
 function populateUsersTable() {
   var users = JSON.parse(localStorage.getItem("users")) || []; // Retrieve users from local storage or initialize an empty array
@@ -543,26 +476,5 @@ function deleteUser(index) {
 
     // Repopulate table
     populateUsersTable();
-  }
-}
-
-//update the nav bar
-function updateNavBar(isValid , us , ad) {
-  const nav = document.querySelector('nav');
-
-  if (isValid || us || ad ) {
-    
-    const loginLink = nav.querySelector('h3 a[href="Login.html"]');
-    const signupLink = nav.querySelector('h3 a[href="Signup.html"]');
-    if (loginLink) loginLink.parentElement.remove();
-    if (signupLink) signupLink.parentElement.remove();
-
-    
-    const logoutLink = document.createElement('h3');
-    const logoutAnchor = document.createElement('a');
-    logoutAnchor.textContent = "Log out";
-    logoutAnchor.href = "#"; 
-    logoutLink.appendChild(logoutAnchor);
-    nav.appendChild(logoutLink);
   }
 }
