@@ -339,7 +339,9 @@ function handleSignupFormSubmission() {
   // Ensure the form submission is prevented if validation fails
   return isValid;
 }
+let currentUserRole = null;
 
+// Function to handle login actions
 function handleLogin(userType) {
   var enteredUsername = document.getElementById("username-bar").value.trim();
   var enteredPassword = document.getElementById("password-bar").value.trim();
@@ -353,11 +355,14 @@ function handleLogin(userType) {
       u.username === enteredUsername &&
       u.password === enteredPassword &&
       ((userType === "admin" && u.isAdmin) ||
-        (userType === "user" && !u.isAdmin))
+      (userType === "user" && !u.isAdmin))
     );
   });
 
   if (user) {
+    // Set the current user's role
+    currentUserRole = userType;
+
     if (userType === "admin") {
       alert("Login as admin successful!");
       window.location.href = "admin/adminhomepage.html"; // Redirect to admin page
@@ -369,7 +374,6 @@ function handleLogin(userType) {
     alert("Invalid username or password");
   }
 }
-
 // this functoin for search with book name or book author and display the data.
 function searchAndDisplayBookDetails(bookName) {
   const query = bookName.toLowerCase();
@@ -397,39 +401,41 @@ function searchAndDisplayBookDetails(bookName) {
   }
 }
 
-// fucntion to checout the book and test if you are a menber or not ,,,,,,,,,...............
-function checkOutBook(bookId, isMember) {
-  const book = localStorage.find((book) => book.id === bookId);
+function updateNavBar() {
+  const navigation = document.getElementById("navigation");
 
-  if (book) {
-    if (book.available) {
-      if (isMember) {
-        book.available = false;
-        console.log("Book checked out successfully.");
-      } else {
-        console.log("Only members can check out books.");
-      }
-    } else {
-      console.log("Book is not available for checkout.");
-    }
+  // Clear the navigation bar
+  navigation.innerHTML = '';
+
+  // Add the logo
+  navigation.innerHTML += `<a href="index.html"><img src="Material/OfficalLogo.png" alt="Logo" /></a>`;
+
+  // Add links based on the user role
+  if (currentUserRole === 'admin') {
+    // If logged in as admin, show admin links
+    navigation.innerHTML += `
+      <h3><a href="index.html">Home Page</a></h3>
+      <h3><a href="categories.html">Categories</a></h3>
+      <h3><a href="Borrow_book.html">Borrow Book</a></h3>
+      <h3><a href="Logout.html">Logout</a></h3>
+    `;
+  } else if (currentUserRole === 'user') {
+    // If logged in as user, show user links
+    navigation.innerHTML += `
+      <h3><a href="index.html">Home Page</a></h3>
+      <h3><a href="categories.html">Categories</a></h3>
+      <h3><a href="Borrow_book.html">Borrow Book</a></h3>
+      <h3><a href="Logout.html">Logout</a></h3>
+    `;
   } else {
-    console.log("Book not found.");
-  }
-}
-
-//  and this Function to return a book
-function returnBook(bookId) {
-  const book = localStorage.find((book) => book.id === bookId);
-
-  if (book) {
-    if (!book.available) {
-      book.available = true;
-      console.log("Book returned successfully.");
-    } else {
-      console.log("Book is already available.");
-    }
-  } else {
-    console.log("Book not found.");
+    // If not logged in, show login and register links
+    navigation.innerHTML += `
+      <h3><a href="index.html">Home Page</a></h3>
+      <h3><a href="categories.html">Categories</a></h3>
+      <h3><a href="Borrow_book.html">Borrow Book</a></h3>
+      <h3><a href="Login.html">Login</a></h3>
+      <h3><a href="Signup.html">Register</a></h3>
+    `;
   }
 }
 
