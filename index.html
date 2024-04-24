@@ -6,38 +6,41 @@
     <title>Quirky Quill</title>
     <link rel="icon" type="image/x-icon" href="Material/NewOfficialLogo.png" />
     <link rel="stylesheet" href="CSS/Style.CSS" />
+    <script src="script.js"></script>
   </head>
 
   <body>
     <!--Navigation Bar-->
-    <nav id = "navigation">
+    <nav id="navigation">
       <a href="index.html"><img src="Material/OfficalLogo.png" alt="Logo" /></a>
       <h3><a href="index.html">Home Page</a></h3>
-      <h3><a href="categories.html">Categories </a></h3>
+      <h3><a href="categories.html">Categories</a></h3>
       <h3><a href="Borrow_book.html">Borrow Book</a></h3>
       <h3><a href="Login.html">Login</a></h3>
       <h3><a href="Signup.html">Register</a></h3>
     </nav>
-      <script src="script.js"></script>
-    <script>
-  updateNavBar();
-</script>
     <!--Navigation Bar-->
+
     <br />
     <!--Search Bar-->
-    <SearchBar>
+    <div id="SearchBar">
       <input
         type="text"
         name="Search"
         id="search-bar"
         placeholder="Search Books"
       />
-      <button type="submit">Search</button>
-      </SearchBar>
-    <br />
-  <script src = "script.js"></script>
-  <button onclick="searchAndPrintData()">Search</button>   
+      <button type="submit" onclick="search()">Search</button>
+    </div>
+  
+    <div id="search-results">
+      <!-- Search results will be displayed here -->
+    </div>
     <!--Search Bar-->
+
+    <br />
+
+
 
     <!-- class for each category -->
 
