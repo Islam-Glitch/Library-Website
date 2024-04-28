@@ -1,4 +1,3 @@
-// Book Class: Represents a book
 class Book {
   constructor(title, category, author, description, image) {
     this.title = title;
@@ -9,11 +8,31 @@ class Book {
   }
 }
 
-// UI Class: Handle UI Tasks (display, delete, edit)
 class UI {
   static displayBooks() {
     const books = Store.getBooks();
-    books.forEach((book) => UI.addBookToList(book));
+    if (document.querySelector("#book-list")) {
+      books.forEach((book) => UI.addBookToList(book));
+    } else if (document.querySelector(".container")) {
+      books.forEach((book) => UI.addBookToHomePage(book));
+    }
+  }
+
+  static addBookToHomePage(book) {
+    const container = document.querySelector(".container");
+
+    const bookDiv = document.createElement("div");
+    bookDiv.classList.add("book");
+
+    const bookLink = document.createElement("a");
+    bookLink.href = `Template_book.html?title=${encodeURI(book.title)}`;
+    bookLink.innerHTML = `
+      <img src="../Data/Photos/${book.image}" class="image" alt="${book.description}" />
+      <h2>${book.title}</h2>
+    `;
+
+    bookDiv.appendChild(bookLink);
+    container.appendChild(bookDiv);
   }
 
   static addBookToList(book) {
@@ -24,15 +43,136 @@ class UI {
       <td>${book.category}</td>
       <td>${book.author}</td>
       <td>${book.description}</td>
+      <td><img src="../Data/Photos/${book.image}" style="max-width: 100px; max-height: 100px;" /></td>
       <td>
-        <a href="#" class="btn btn-danger btn-sm delete">Delete</a>
+        <a href="#" class="btn btn-danger btn-sm delete" data-description="${book.description}">Delete</a>
         <a href="#" class="btn btn-primary btn-sm edit">Edit</a>
       </td>`;
     list.appendChild(row);
   }
+
+  static deleteBook(element) {
+    if (element.classList.contains("delete")) {
+      const description = element.getAttribute("data-description");
+      element.parentElement.parentElement.remove(); // Remove from UI
+      Store.removeBook(description); // Remove from local storage
+      UI.showAlert("Book Removed", "success");
+    }
   }
 
-// Store Class: Handles Local Storage
+  static editBook(el) {
+    const row = el.parentElement.parentElement;
+    const cells = row.querySelectorAll("td:not(:last-child)");
+
+    cells.forEach((cell, index) => {
+      if (index !== 4) {
+        // Exclude the image field
+        const text = cell.textContent;
+        cell.innerHTML =
+          index === 3
+            ? `<textarea>${text}</textarea>`
+            : `<input type="text" value="${text}">`;
+      } else {
+        // Handle the image field
+        const imageSrc = cell.querySelector("img").getAttribute("src");
+        cell.innerHTML = `
+            <input type="file" accept="image/*" id="image" onchange="UI.previewImage(event)"/>
+            <img src="${imageSrc}" style="max-width: 100px; max-height: 100px;" id="image-preview" />
+          `;
+      }
+    });
+
+    el.textContent = "Save";
+    el.classList.remove("edit");
+    el.classList.add("save");
+  }
+
+  static previewImage(event) {
+    const input = event.target;
+    const preview = input.parentNode.querySelector("img");
+
+    const file = input.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      preview.src = e.target.result;
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    } else {
+      preview.src = "";
+    }
+  }
+
+  static saveBook(el) {
+    const row = el.parentElement.parentElement;
+    const cells = row.querySelectorAll("td:not(:last-child)");
+
+    cells.forEach((cell, index) => {
+      if (index !== 4) {
+        // Exclude the image field
+        if (cell.querySelector("input")) {
+          const newValue = cell.querySelector("input").value;
+          cell.textContent = newValue;
+        } else if (cell.querySelector("textarea")) {
+          const newValue = cell.querySelector("textarea").value;
+          cell.textContent = newValue;
+        }
+      } else {
+        // Handle the image field
+        const input = cell.querySelector("input[type='file']");
+        const imageSrc =
+          input.files.length > 0 ? URL.createObjectURL(input.files[0]) : "";
+        const imageName = input.files.length > 0 ? input.files[0].name : "";
+        cell.innerHTML = `
+          <img src="${imageSrc}" style="max-width: 100px; max-height: 100px;" id="image-preview" />
+          <input type="hidden" name="image" value="${imageName}" />
+        `;
+      }
+    });
+
+    el.textContent = "Edit";
+    el.classList.remove("save");
+    el.classList.add("edit");
+
+    const updatedBook = {
+      title: cells[0].textContent,
+      category: cells[1].textContent,
+      author: cells[2].textContent,
+      description: cells[3].textContent,
+      image: cells[4].querySelector("input[type='hidden']").value, // Get image name
+    };
+
+    const rowIndex = row.rowIndex - 1; // adjust index for header row
+    const books = Store.getBooks();
+    books[rowIndex] = updatedBook;
+
+    localStorage.setItem("books", JSON.stringify(books)); // Update local storage directly
+
+    UI.showAlert("Book Updated", "success");
+  }
+
+  static showAlert(message, className) {
+    const div = document.createElement("div");
+    div.className = `alert alert-${className}`;
+    div.appendChild(document.createTextNode(message));
+    const container = document.querySelector(".container");
+    const form = document.querySelector("#book-form");
+    container.insertBefore(div, form);
+    // Vanish in 3 seconds
+    setTimeout(() => document.querySelector(".alert").remove(), 3000);
+  }
+
+  static clearFields() {
+    document.querySelector("#title").value = "";
+    document.querySelector("#category").value = "";
+    document.querySelector("#author").value = "";
+    document.querySelector("#description").value = "";
+    document.querySelector("#image").value = "";
+  }
+}
+
 class Store {
   static getBooks() {
     let books;
@@ -63,62 +203,48 @@ class Store {
   }
 }
 
-// Event: Display Books
 document.addEventListener("DOMContentLoaded", UI.displayBooks);
 
-// Event : Add a Book
-document.querySelector("#book-form").addEventListener("submit", (e) => {
-  // Prevent actual submit
-  e.preventDefault();
+if (document.querySelector("#book-list")) {
+  document.querySelector("#book-list").addEventListener("click", (e) => {
+    if (e.target.classList.contains("delete")) {
+      UI.deleteBook(e.target);
+    } else if (e.target.classList.contains("edit")) {
+      UI.editBook(e.target);
+    } else if (e.target.classList.contains("save")) {
+      UI.saveBook(e.target);
+    }
+  });
+}
 
-  // Get form values
-  const title = document.querySelector("#title").value;
-  const category = document.querySelector("#category").value; // Update this line
-  const author = document.querySelector("#author").value;
-  const description = document.querySelector("#description").value;
+if (document.querySelector("#book-form")) {
+  document.querySelector("#book-form").addEventListener("submit", (e) => {
+    e.preventDefault();
 
-  // Validate
-  if (title === "" || category === "" || author === "" || description === "") {
-    // Update this line
-    UI.showAlert("Please fill in all fields", "danger");
-  } else {
-    // Instantiate book
-    const book = new Book(title, category, author, description); // Update this line
+    const title = document.querySelector("#title").value;
+    const category = document.querySelector("#category").value;
+    const author = document.querySelector("#author").value;
+    const description = document.querySelector("#description").value;
+    const image = document.querySelector("#image").files[0].name; // Get image name
 
-    // Add Book to UI
-    UI.addBookToList(book);
+    if (
+      title === "" ||
+      category === "" ||
+      author === "" ||
+      description === ""
+    ) {
+      UI.showAlert("Please fill in all fields", "danger");
+    } else {
+      const book = new Book(title, category, author, description, image);
 
-    // Add book to store
-    Store.addBook(book);
+      UI.addBookToList(book);
+      Store.addBook(book);
 
-    // Show success message
-    UI.showAlert("Book Added", "success");
-
-    // Clear fields
-    UI.clearFields();
-  }
-});
-
-// Event: Remove a Book or Edit a Book
-document.querySelector("#book-list").addEventListener("click", (e) => {
-  if (e.target.classList.contains("delete")) {
-    // Remove book from UI
-    UI.deleteBook(e.target);
-
-    // Remove book from store
-    Store.removeBook(e.target.parentElement.previousElementSibling.textContent);
-
-    // Show success message for book deletion
-    UI.showAlert("Book Removed", "success");
-  } else if (e.target.classList.contains("edit")) {
-    // Edit book
-    UI.editBook(e.target);
-  } else if (e.target.classList.contains("save")) {
-    // Save edited book
-    UI.saveBook(e.target);
-  }
-});
-
+      UI.showAlert("Book Added", "success");
+      UI.clearFields();
+    }
+  });
+}
 //Form validations
 function validateForm() {
   var fullname = document.getElementById("fullname").value;
@@ -339,9 +465,8 @@ function handleSignupFormSubmission() {
   // Ensure the form submission is prevented if validation fails
   return isValid;
 }
-let currentUserRole = null;
+let currentUserRole = null; // Declare currentUserRole at the top of the script
 
-// Function to handle login actions
 function handleLogin(userType) {
   var enteredUsername = document.getElementById("username-bar").value.trim();
   var enteredPassword = document.getElementById("password-bar").value.trim();
@@ -349,31 +474,37 @@ function handleLogin(userType) {
   // Retrieve users from local storage
   var users = JSON.parse(localStorage.getItem("users")) || [];
 
+  console.log("Users from localStorage:", users);
+
   // Find the user in the array
   var user = users.find(function (u) {
     return (
       u.username === enteredUsername &&
       u.password === enteredPassword &&
       ((userType === "admin" && u.isAdmin) ||
-      (userType === "user" && !u.isAdmin))
+        (userType === "user" && !u.isAdmin))
     );
   });
 
-  if (user) {
-    // Set the current user's role
-    currentUserRole = userType;
+  console.log("User found:", user);
 
-    if (userType === "admin") {
+  if (user) {
+    if (userType === "admin" && user.isAdmin) {
       alert("Login as admin successful!");
+      console.log("Redirecting to admin homepage...");
       window.location.href = "admin/adminhomepage.html"; // Redirect to admin page
-    } else {
+    } else if (userType === "user" && !user.isAdmin) {
       alert("Login as user successful!");
+      console.log("Redirecting to user page...");
       window.location.href = "index.html"; // Redirect to user page
+    } else {
+      alert("Invalid user type");
     }
   } else {
     alert("Invalid username or password");
   }
 }
+
 // this functoin for search with book name or book author and display the data.
 function searchAndDisplayBookDetails(bookName) {
   const query = bookName.toLowerCase();
@@ -405,13 +536,13 @@ function updateNavBar() {
   const navigation = document.getElementById("navigation");
 
   // Clear the navigation bar
-  navigation.innerHTML = '';
+  navigation.innerHTML = "";
 
   // Add the logo
   navigation.innerHTML += `<a href="index.html"><img src="Material/OfficalLogo.png" alt="Logo" /></a>`;
 
   // Add links based on the user role
-  if (currentUserRole === 'admin') {
+  if (currentUserRole === "admin") {
     // If logged in as admin, show admin links
     navigation.innerHTML += `
       <h3><a href="index.html">Home Page</a></h3>
@@ -419,7 +550,7 @@ function updateNavBar() {
       <h3><a href="Borrow_book.html">Borrow Book</a></h3>
       <h3><a href="Logout.html">Logout</a></h3>
     `;
-  } else if (currentUserRole === 'user') {
+  } else if (currentUserRole === "user") {
     // If logged in as user, show user links
     navigation.innerHTML += `
       <h3><a href="index.html">Home Page</a></h3>
@@ -484,3 +615,70 @@ function deleteUser(index) {
     populateUsersTable();
   }
 }
+
+function displayBorrowedBooks() {
+  const borrowedBooks = JSON.parse(localStorage.getItem("borrowedBooks")) || [];
+  const tbody = document.querySelector("#book-table tbody");
+
+  tbody.innerHTML = "";
+
+  borrowedBooks.forEach((book, index) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${book.title}</td>
+      <td>${book.category}</td>
+      <td>${book.author}</td>
+      <td><button class="delete-btn" data-index="${index}">Delete</button></td>
+    `;
+    tbody.appendChild(row);
+  });
+
+  // Add event listener to delete buttons
+  const deleteButtons = document.querySelectorAll(".delete-btn");
+  deleteButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      const index = parseInt(this.getAttribute("data-index"));
+      removeBookFromTable(index);
+    });
+  });
+}
+
+function removeBookFromTable(index) {
+  let borrowedBooks = JSON.parse(localStorage.getItem("borrowedBooks")) || [];
+  borrowedBooks.splice(index, 1);
+  localStorage.setItem("borrowedBooks", JSON.stringify(borrowedBooks));
+  displayBorrowedBooks(); // Refresh the table
+}
+
+window.onload = function () {
+  const urlParams = new URLSearchParams(window.location.search);
+  const title = urlParams.get("title");
+
+  // Retrieve book information from local storage
+  const books = JSON.parse(localStorage.getItem("books"));
+  const book = books.find((b) => b.title === title);
+
+  if (book) {
+    // Retrieve borrowed books from local storage
+    let borrowedBooks = JSON.parse(localStorage.getItem("borrowedBooks")) || [];
+
+    // Check if the book is already borrowed
+    const alreadyBorrowed = borrowedBooks.some(
+      (borrowedBook) => borrowedBook.title === book.title
+    );
+
+    if (alreadyBorrowed) {
+      alert("This book is already borrowed.");
+      window.location.href = "Borrow_book.html";
+    } else {
+      // Add the book to the borrowed books list
+      borrowedBooks.push(book);
+      localStorage.setItem("borrowedBooks", JSON.stringify(borrowedBooks));
+
+      // Display borrowed books
+      displayBorrowedBooks();
+    }
+  } else {
+    alert("Book not found.");
+  }
+};

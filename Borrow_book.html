@@ -9,7 +9,7 @@
   </head>
   <body>
     <!--Navigation Bar-->
-    <nav id = "navigation">
+    <nav>
       <a href="index.html"><img src="Material/OfficalLogo.png" alt="Logo" /></a>
       <h3><a href="index.html">Home Page</a></h3>
       <h3><a href="categories.html">Categories </a></h3>
@@ -17,10 +17,6 @@
       <h3><a href="Login.html">Login</a></h3>
       <h3><a href="Signup.html">Register</a></h3>
     </nav>
-      <script src="script.js"></script>
-    <script>
-  updateNavBar();
-</script>
     <!--Navigation Bar-->
     <br />
     <h3>The list of borrowed books</h3>
@@ -33,7 +29,13 @@
           <th>Action</th>
         </tr>
       </thead>
-      <tbody>
-      
-      </tbody>
+      <tbody></tbody>
     </table>
+    <script src="script.js"></script>
+    <script>
+      displayBorrowedBooks();
+    </script>
+    <a href="index.html" id="add-another-btn">Add Another Book</a>
+    <a href="confirm.html" id="confirm-btn">Confirm</a>
+  </body>
+</html>

@@ -36,11 +36,11 @@
 
         if (book) {
           const bookInfo = `
-                    <h2>${book.title}</h2>
-                    <p><strong>Category:</strong> ${book.category}</p>
-                    <p><strong>Author:</strong> ${book.author}</p>
-                    <p><strong>Description:</strong> ${book.description}</p>
-                `;
+            <h2>${book.title}</h2>
+            <p><strong>Category:</strong> ${book.category}</p>
+            <p><strong>Author:</strong> ${book.author}</p>
+            <p><strong>Description:</strong> ${book.description}</p>
+          `;
           document.getElementById("book-info").innerHTML = bookInfo;
         } else {
           document.getElementById("book-info").innerHTML =
