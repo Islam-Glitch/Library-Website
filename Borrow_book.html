@@ -3,20 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quirky Quill</title>
+    <title>Quirky Quill - Borrowed Books</title>
     <link rel="icon" type="image/x-icon" href="Material/NewOfficialLogo.png" />
     <link rel="stylesheet" href="CSS/Style.CSS" />
+    <script src="script.js"></script>
   </head>
   <body>
     <!--Navigation Bar-->
-    <nav>
-      <a href="index.html"><img src="Material/OfficalLogo.png" alt="Logo" /></a>
-      <h3><a href="index.html">Home Page</a></h3>
-      <h3><a href="categories.html">Categories </a></h3>
-      <h3><a href="Borrow_book.html">Borrow Book</a></h3>
-      <h3><a href="Login.html">Login</a></h3>
-      <h3><a href="Signup.html">Register</a></h3>
-    </nav>
+    <nav id="navigation"></nav>
     <!--Navigation Bar-->
     <br />
     <h3>The list of borrowed books</h3>
@@ -31,11 +25,17 @@
       </thead>
       <tbody></tbody>
     </table>
-    <script src="script.js"></script>
-    <script>
-      displayBorrowedBooks();
-    </script>
     <a href="index.html" id="add-another-btn">Add Another Book</a>
     <a href="confirm.html" id="confirm-btn">Confirm</a>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        updateNavBar();
+        if (!isLoggedIn()) {
+          alert("Please log in to access this page.");
+          redirectToLogin();
+        }
+        displayBorrowedBooks();
+      });
+    </script>
   </body>
 </html>

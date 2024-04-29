@@ -3,28 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quirky Quill</title>
+    <title>Quirky Quill - Login</title>
     <link rel="icon" type="image/x-icon" href="Material/NewOfficialLogo.png" />
     <link rel="stylesheet" href="CSS/Style.CSS" />
+    <!-- Include script.js here -->
     <script src="script.js"></script>
   </head>
   <body>
-    <!--Navigation Bar-->
-    <nav id="navigation">
-      <a href="index.html"><img src="Material/OfficalLogo.png" alt="Logo" /></a>
-      <h3><a href="index.html">Home Page</a></h3>
-      <h3><a href="categories.html">Categories </a></h3>
-      <h3><a href="Borrow_book.html">Borrow Book</a></h3>
-      <h3><a href="Login.html">Login</a></h3>
-      <h3><a href="Signup.html">Register</a></h3>
-    </nav>
-    <script src="script.js"></script>
-    <script>
-      updateNavBar();
-    </script>
+    <nav id="navigation"></nav>
 
-    <!--Navigation Bar-->
-    <br />
     <br />
     <form method="post">
       <div>
@@ -54,6 +41,11 @@
       </div>
       <br />
       <center>
+        <button type="button" onclick="redirectToSignup()">
+          I don't have Account
+        </button>
+      </center>
+      <center>
         <button type="button" onclick="handleLogin('user')">
           Login as User
         </button>
@@ -62,5 +54,10 @@
         </button>
       </center>
     </form>
+
+    <script>
+      // Call updateNavBar when the page loads
+      document.addEventListener("DOMContentLoaded", updateNavBar);
+    </script>
   </body>
 </html>

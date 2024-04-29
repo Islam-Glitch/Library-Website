@@ -6,44 +6,11 @@
     <title>Quirky Quill</title>
     <link rel="icon" type="image/x-icon" href="Material/NewOfficialLogo.png" />
     <link rel="stylesheet" href="CSS/Style.CSS" />
-    <style>
-      /* Style for the book list */
-      #book-list {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-start; /* Align books to the start of the flex container */
-        list-style-type: none;
-        padding: 0;
-      }
-
-      /* Style for each book item */
-      .book-item {
-        flex: 0 0 30%; /* Each book item takes up 30% of the container width */
-        margin: 10px;
-        text-align: center;
-      }
-
-      /* Style for the book image */
-      .book-image {
-        width: 100%; /* Ensure the image fills its container */
-      }
-
-      /* Style for the book title */
-      .book-title {
-        margin-top: 5px;
-      }
-    </style>
+    <script src="script.js"></script>
   </head>
   <body>
     <!-- Navigation Bar -->
-    <nav>
-      <a href="index.html"><img src="Material/OfficalLogo.png" alt="Logo" /></a>
-      <h3><a href="index.html">Home Page</a></h3>
-      <h3><a href="categories.html">Categories</a></h3>
-      <h3><a href="Borrow_book.html">Borrow Book</a></h3>
-      <h3><a href="Login.html">Login</a></h3>
-      <h3><a href="Signup.html">Register</a></h3>
-    </nav>
+    <nav id="navigation"></nav>
     <!-- Navigation Bar -->
 
     <!-- Display Book Titles -->
@@ -72,13 +39,13 @@
 
           // Create an image element
           const image = document.createElement("img");
-          image.src = "../Data/Photos/" + book.image; // Set the correct image source
-          image.classList.add("book-image"); // Apply styling
+          image.src = "Data/Photos/" + book.image; // Set the correct image source
+          image.classList.add("image"); // Apply styling
 
           // Create a paragraph element for the book title
           const titleParagraph = document.createElement("p");
           titleParagraph.textContent = book.title; // Set the book title
-          titleParagraph.classList.add("book-title"); // Apply styling
+          titleParagraph.classList.add("book"); // Apply styling
 
           // Append the image and title to the anchor element
           bookLink.appendChild(image);
@@ -96,6 +63,10 @@
 
         // Display books for the selected category
         displayBook(category);
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        updateNavBar();
       });
     </script>
   </body>

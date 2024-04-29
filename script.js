@@ -27,7 +27,7 @@ class UI {
     const bookLink = document.createElement("a");
     bookLink.href = `Template_book.html?title=${encodeURI(book.title)}`;
     bookLink.innerHTML = `
-      <img src="../Data/Photos/${book.image}" class="image" alt="${book.description}" />
+      <img src="Data/Photos/${book.image}" class="image" alt="${book.description}" />
       <h2>${book.title}</h2>
     `;
 
@@ -430,143 +430,47 @@ function validateConfirmPasswordInput() {
     confirmPasswordError.textContent = "";
   }
 }
-function handleSignupFormSubmission() {
-  var isValid = validateForm(); // Perform form validation
-
-  if (isValid) {
-    var fullname = document.getElementById("fullname").value.trim();
-    var username = document.getElementById("username").value.trim();
-    var email = document.getElementById("email").value.trim();
-    var password = document.getElementById("password").value.trim();
-    var isAdmin = document.getElementById("is_admin").checked; // Check if admin checkbox is checked
-
-    // Retrieve existing users or initialize an empty array
-    var users = JSON.parse(localStorage.getItem("users")) || [];
-
-    // Create a user object
-    var user = {
-      fullname: fullname,
-      username: username,
-      email: email,
-      password: password,
-      isAdmin: isAdmin, // Include isAdmin flag in the user object
-    };
-
-    // Push the user object to the array of users
-    users.push(user);
-
-    // Store the updated array of users in local storage
-    localStorage.setItem("users", JSON.stringify(users));
-
-    // Optionally, you can redirect the user to the login page after signup
-    window.location.href = "Login.html";
-  }
-
-  // Ensure the form submission is prevented if validation fails
-  return isValid;
-}
-let currentUserRole = null; // Declare currentUserRole at the top of the script
-
-function handleLogin(userType) {
-  var enteredUsername = document.getElementById("username-bar").value.trim();
-  var enteredPassword = document.getElementById("password-bar").value.trim();
-
-  // Retrieve users from local storage
-  var users = JSON.parse(localStorage.getItem("users")) || [];
-
-  console.log("Users from localStorage:", users);
-
-  // Find the user in the array
-  var user = users.find(function (u) {
-    return (
-      u.username === enteredUsername &&
-      u.password === enteredPassword &&
-      ((userType === "admin" && u.isAdmin) ||
-        (userType === "user" && !u.isAdmin))
-    );
-  });
-
-  console.log("User found:", user);
-
-  if (user) {
-    if (userType === "admin" && user.isAdmin) {
-      alert("Login as admin successful!");
-      console.log("Redirecting to admin homepage...");
-      window.location.href = "admin/adminhomepage.html"; // Redirect to admin page
-    } else if (userType === "user" && !user.isAdmin) {
-      alert("Login as user successful!");
-      console.log("Redirecting to user page...");
-      window.location.href = "index.html"; // Redirect to user page
-    } else {
-      alert("Invalid user type");
-    }
-  } else {
-    alert("Invalid username or password");
-  }
-}
 
 // this functoin for search with book name or book author and display the data.
-function searchAndDisplayBookDetails(bookName) {
-  const query = bookName.toLowerCase();
-  const results = localStorage.filter((book) => {
-    return (
-      book.title.toLowerCase().includes(query) ||
-      book.author.toLowerCase().includes(query)
-    );
+function search() {
+  // Get the search query from the input field
+  var query = document.getElementById("search-bar").value.trim().toLowerCase();
+
+  // If the search query is empty, clear the search results container and return
+  if (query === "") {
+    document.getElementById("search-results").innerHTML = "";
+    return;
+  }
+
+  // Retrieve books from local storage
+  var books = JSON.parse(localStorage.getItem("books")) || [];
+
+  // Filter books
+  var matchedBooks = books.filter(function (book) {
+    return book.title.toLowerCase().includes(query);
   });
 
-  if (results.length > 0) {
-    results.forEach((book) => {
-      console.log("Title:", book.title);
+  // Display the matched books
+  var searchResultsContainer = document.getElementById("search-results");
+  searchResultsContainer.innerHTML = "";
 
-      console.log("Author:", book.author);
+  if (matchedBooks.length === 0) {
+    searchResultsContainer.innerHTML = "<p>No results found.</p>";
+  } else {
+    matchedBooks.forEach(function (book) {
+      var result = document.createElement("div");
+      result.classList.add("book");
 
-      console.log("Pages:", book.pages);
+      var titleLink = document.createElement("a");
+      titleLink.textContent = book.title;
+      titleLink.href =
+        "Template_book.html?title=" + encodeURIComponent(book.title);
 
-      console.log("Price:", book.price);
+      result.appendChild(titleLink);
 
-      console.log("\n");
+      // Append result to search results container
+      searchResultsContainer.appendChild(result);
     });
-  } else {
-    console.log("Book not found.");
-  }
-}
-
-function updateNavBar() {
-  const navigation = document.getElementById("navigation");
-
-  // Clear the navigation bar
-  navigation.innerHTML = "";
-
-  // Add the logo
-  navigation.innerHTML += `<a href="index.html"><img src="Material/OfficalLogo.png" alt="Logo" /></a>`;
-
-  // Add links based on the user role
-  if (currentUserRole === "admin") {
-    // If logged in as admin, show admin links
-    navigation.innerHTML += `
-      <h3><a href="index.html">Home Page</a></h3>
-      <h3><a href="categories.html">Categories</a></h3>
-      <h3><a href="Borrow_book.html">Borrow Book</a></h3>
-      <h3><a href="Logout.html">Logout</a></h3>
-    `;
-  } else if (currentUserRole === "user") {
-    // If logged in as user, show user links
-    navigation.innerHTML += `
-      <h3><a href="index.html">Home Page</a></h3>
-      <h3><a href="categories.html">Categories</a></h3>
-      <h3><a href="Borrow_book.html">Borrow Book</a></h3>
-      <h3><a href="Logout.html">Logout</a></h3>
-    `;
-  } else {
-    // If not logged in, show login and register links
-    navigation.innerHTML += `
-      <h3><a href="index.html">Home Page</a></h3>
-      <h3><a href="categories.html">Categories</a></h3>
-      <h3><a href="Borrow_book.html">Borrow Book</a></h3>
-      <h3><a href="Login.html">Login</a></h3>
-      <h3><a href="Signup.html">Register</a></h3>
-    `;
   }
 }
 
@@ -616,6 +520,41 @@ function deleteUser(index) {
   }
 }
 
+// signup.js
+
+// Function to borrow a book
+function borrowBook(book) {
+  // Check if the user is logged in
+  if (!isLoggedIn()) {
+    alert("Login to borrow this book.");
+    redirectToLogin();
+    return;
+  }
+
+  let borrowedBooks = JSON.parse(localStorage.getItem("borrowedBooks")) || [];
+
+  // Check if the book is already borrowed
+  const alreadyBorrowed = borrowedBooks.some(
+    (borrowedBook) => borrowedBook.title === book.title
+  );
+
+  if (alreadyBorrowed) {
+    alert("This book is already borrowed.");
+    return;
+  }
+
+  // Add the book to the borrowed books list
+  borrowedBooks.push(book);
+  localStorage.setItem("borrowedBooks", JSON.stringify(borrowedBooks));
+
+  // Redirect to borrowed books page
+  window.location.href = "Borrow_book.html";
+}
+
+function redirectToLogin() {
+  window.location.href = "login.html";
+}
+
 function displayBorrowedBooks() {
   const borrowedBooks = JSON.parse(localStorage.getItem("borrowedBooks")) || [];
   const tbody = document.querySelector("#book-table tbody");
@@ -650,35 +589,160 @@ function removeBookFromTable(index) {
   displayBorrowedBooks(); // Refresh the table
 }
 
-window.onload = function () {
-  const urlParams = new URLSearchParams(window.location.search);
-  const title = urlParams.get("title");
+function handleSignupFormSubmission() {
+  var isValid = validateForm(); // Perform form validation
 
-  // Retrieve book information from local storage
-  const books = JSON.parse(localStorage.getItem("books"));
-  const book = books.find((b) => b.title === title);
+  if (isValid) {
+    var fullname = document.getElementById("fullname").value.trim();
+    var username = document.getElementById("username").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var password = document.getElementById("password").value.trim();
+    var isAdmin = document.getElementById("is_admin").checked; // Check if admin checkbox is checked
 
-  if (book) {
-    // Retrieve borrowed books from local storage
-    let borrowedBooks = JSON.parse(localStorage.getItem("borrowedBooks")) || [];
+    // Retrieve existing users or initialize an empty array
+    var users = JSON.parse(localStorage.getItem("users")) || [];
 
-    // Check if the book is already borrowed
-    const alreadyBorrowed = borrowedBooks.some(
-      (borrowedBook) => borrowedBook.title === book.title
+    // Check if the username already exists
+    var isUsernameTaken = users.some(function (user) {
+      return user.username === username;
+    });
+
+    if (isUsernameTaken) {
+      alert("Username already exists. Please choose a different one.");
+      return false; // Prevent form submission
+    }
+
+    // Check if the email already exists
+    var isEmailTaken = users.some(function (user) {
+      return user.email === email;
+    });
+
+    if (isEmailTaken) {
+      alert("This email has been used before. Please use a different one.");
+      return false; // Prevent form submission
+    }
+
+    // Create a user object
+    var user = {
+      fullname: fullname,
+      username: username,
+      email: email,
+      password: password,
+      isAdmin: isAdmin, // Include isAdmin flag in the user object
+    };
+
+    // Push the user object to the array of users
+    users.push(user);
+
+    // Store the updated array of users in local storage
+    localStorage.setItem("users", JSON.stringify(users));
+
+    // Redirect the user to the login page after signup
+    window.location.href = "Login.html";
+  }
+
+  // Ensure the form submission is prevented if validation fails
+  return isValid;
+}
+
+// Other functions...
+
+function handleLogin(userType) {
+  var enteredUsername = document.getElementById("username-bar").value;
+  var enteredPassword = document.getElementById("password-bar").value;
+
+  if (!enteredUsername || !enteredPassword) {
+    alert("Please enter both username and password.");
+    return;
+  }
+
+  enteredUsername = enteredUsername.trim();
+  enteredPassword = enteredPassword.trim();
+
+  // Retrieve users from local storage
+  var users = JSON.parse(localStorage.getItem("users")) || [];
+
+  console.log("Users from localStorage:", users);
+
+  // Find the user in the array
+  var user = users.find(function (u) {
+    return (
+      u.username === enteredUsername &&
+      u.password === enteredPassword &&
+      ((userType === "admin" && u.isAdmin) ||
+        (userType === "user" && !u.isAdmin))
     );
+  });
 
-    if (alreadyBorrowed) {
-      alert("This book is already borrowed.");
-      window.location.href = "Borrow_book.html";
+  console.log("User found:", user);
+
+  if (user) {
+    if (userType === "admin" && user.isAdmin) {
+      alert("Login as admin successful!");
+      console.log("Redirecting to admin homepage...");
+      // Store user role in session storage
+      sessionStorage.setItem("userRole", "admin");
+      // Store username in session storage
+      sessionStorage.setItem("username", user.username);
+      window.location.href = "admin/adminhomepage.html"; // Redirect to admin page
+    } else if (userType === "user" && !user.isAdmin) {
+      alert("Login as user successful!");
+      console.log("Redirecting to user page...");
+      // Store user role in session storage
+      sessionStorage.setItem("userRole", "user");
+      // Store username in session storage
+      sessionStorage.setItem("username", user.username);
+      window.location.href = "index.html"; // Redirect to user page
     } else {
-      // Add the book to the borrowed books list
-      borrowedBooks.push(book);
-      localStorage.setItem("borrowedBooks", JSON.stringify(borrowedBooks));
-
-      // Display borrowed books
-      displayBorrowedBooks();
+      alert("Invalid user type");
     }
   } else {
-    alert("Book not found.");
+    alert("Invalid username or password");
   }
-};
+}
+function isLoggedIn() {
+  const userRole = sessionStorage.getItem("userRole");
+  console.log("User role:", userRole);
+  return userRole !== null;
+}
+
+function isAdmin() {
+  return sessionStorage.getItem("userRole") === "admin";
+}
+
+function logout() {
+  // Clear session storage and redirect to index page
+  sessionStorage.clear();
+  localStorage.removeItem("borrowedBooks");
+  window.location.href = "index.html";
+}
+
+function updateNavBar() {
+  const navigation = document.getElementById("navigation");
+  const isLoggedIn = sessionStorage.getItem("userRole") !== null;
+
+  if (isLoggedIn) {
+    // If logged in, replace "Login" and "Register" with "Logout"
+    navigation.innerHTML = `
+      <a href="index.html"><img src="Material/OfficalLogo.png" alt="Logo" /></a>
+      <h3><a href="index.html">Home Page</a></h3>
+      <h3><a href="categories.html">Categories</a></h3>
+      <h3><a href="Borrow_book.html">Borrow Book</a></h3>
+      <h3><a href="#" onclick="logout()">Logout</a></h3>
+    `;
+  } else {
+    // If not logged in, display default navigation
+    navigation.innerHTML = `
+      <a href="index.html"><img src="Material/OfficalLogo.png" alt="Logo" /></a>
+      <h3><a href="index.html">Home Page</a></h3>
+      <h3><a href="categories.html">Categories</a></h3>
+      <h3><a href="Borrow_book.html">Borrow Book</a></h3>
+      <h3><a href="Login.html">Login</a></h3>
+      <h3><a href="Signup.html">Register</a></h3>
+    `;
+  }
+}
+
+function redirectToSignup() {
+  window.location.href = "signup.html";
+}

@@ -4,14 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quirky Quill</title>
-    <link rel="icon" type="image/x-icon" href="/Material/NewOfficialLogo.png" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="../Material/NewOfficialLogo.png"
+    />
     <link rel="stylesheet" href="../CSS/Style.CSS" />
     <script src="../script.js"></script>
   </head>
 
   <body>
     <a href="adminhomepage.html">
-      <img src="/Material/NewOfficialLogo.png" class="logo" />
+      <img src="../Material/NewOfficialLogo.png" class="logo" />
     </a>
     <br />
     <section>
@@ -36,6 +40,16 @@
 
     <br />
     <script>
+      window.addEventListener("DOMContentLoaded", function () {
+        if (!isAdmin()) {
+          alert("You must log in as admin to access this page.");
+
+          // Delay the redirect to login page after the alert is dismissed
+          setTimeout(function () {
+            window.location.href = "../login.html";
+          }, 0);
+        }
+      });
       populateUsersTable();
     </script>
   </body>

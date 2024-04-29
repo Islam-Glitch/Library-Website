@@ -1,87 +1,66 @@
 <!DOCTYPE html>
 <html>
-<head>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quirky Quill</title>
-    <link rel="icon" type="image/x-icon" href="Material/NewOfficialLogo.png" />
-    <link rel="stylesheet" href="CSS/Style.CSS" />
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Quirky Quill</title>
+      <link
+        rel="icon"
+        type="image/x-icon"
+        href="Material/NewOfficialLogo.png"
+      />
+      <link rel="stylesheet" href="CSS/Style.CSS" />
+    </head>
+    <title>Book Categories</title>
+    <script src="script.js"></script>
   </head>
-  <title>Book Categories</title>
-</head>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-  }
-  #category-list {
-    list-style-type: none;
-    padding: 0;
-    text-align: center; 
-    font-size: 30px; 
-    display: flex; 
-    flex-wrap: wrap; 
-    justify-content: center; 
-  }
-  #category-list li {
-    margin: 20px; 
-    padding: 15px;
-    cursor: pointer;
-  }
-  #category-list li:hover {
-    color:cadetblue; 
-  }
-</style>
-<body>
-  <nav>
-    <a href="index.html"><img src="Material/OfficalLogo.png" alt="Logo" /></a>
-    <h3><a href="index.html">Home Page</a></h3>
-    <h3><a href="categories.html">Categories </a></h3>
-    <h3><a href="Borrow_book.html">Borrow Book</a></h3>
-    <h3><a href="Login.html">Login</a></h3>
-    <h3><a href="Signup.html">Register</a></h3>
-  </nav>
-  <!--Navigation Bar-->
-  <br />
-  <!--Search Bar-->
-  <SearchBar>
-    <input
-      type="text"
-      name="Search"
-      id="search-bar"
-      placeholder="Search Books"
-    />
-    <button type="submit">Search</button>
-  </SearchBar>
+  <body>
+    <nav id="navigation"></nav>
+    <!--Navigation Bar-->
+    <br />
+    <!--Search Bar-->
+    <SearchBar>
+      <input
+        type="text"
+        name="Search"
+        id="search-bar"
+        placeholder="Search Books"
+      />
+      <button type="submit">Search</button>
+    </SearchBar>
 
-  <!-- List to display categories -->
-  <ul id="category-list">
-    <!-- Categories will be dynamically added here -->
-  </ul>
+    <!-- List to display categories -->
+    <ul id="category-list">
+      <!-- Categories will be dynamically added here -->
+    </ul>
 
-  <script>
-    class UI {
-      static displayBooks() {
+    <script>
+      function displayBooks() {
         const books = JSON.parse(localStorage.getItem("books"));
-        const categories = books.map(book => book.category);
-        const categoriesSet = new Set(categories);
-        const uniqueCategories = [...categoriesSet];
-        UI.renderCategories(uniqueCategories);
+        const categories = books.map((book) => book.category);
+        const uniqueCategories = [...new Set(categories)];
+        renderCategories(uniqueCategories);
       }
-      static renderCategories(categories) {
+
+      function renderCategories(categories) {
         const categoryList = document.querySelector("#category-list");
-        categories.forEach(category => {
-          const listItem = document.createElement('li');
-          const link = document.createElement('a');
-          link.href = "Template_Category.html?category=" + encodeURIComponent(category);
+        categoryList.innerHTML = ""; // Clear existing categories
+        categories.forEach((category) => {
+          const listItem = document.createElement("li");
+          const link = document.createElement("a");
+          link.href =
+            "Template_Category.html?category=" + encodeURIComponent(category);
           link.textContent = category;
           listItem.appendChild(link);
           categoryList.appendChild(listItem);
         });
       }
-    }
-    document.addEventListener("DOMContentLoaded", UI.displayBooks);
-  </script>
-</body>
-</html>
 
+      document.addEventListener("DOMContentLoaded", () => {
+        displayBooks();
+        updateNavBar(); // Call updateNavBar from script.js
+      });
+    </script>
+  </body>
+</html>

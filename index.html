@@ -7,17 +7,9 @@
     <link rel="icon" type="image/x-icon" href="Material/NewOfficialLogo.png" />
     <link rel="stylesheet" href="CSS/Style.CSS" />
   </head>
-
   <body>
     <!--Navigation Bar-->
-    <nav id="navigation">
-      <a href="index.html"><img src="Material/OfficalLogo.png" alt="Logo" /></a>
-      <h3><a href="index.html">Home Page</a></h3>
-      <h3><a href="categories.html">Categories</a></h3>
-      <h3><a href="Borrow_book.html">Borrow Book</a></h3>
-      <h3><a href="Login.html">Login</a></h3>
-      <h3><a href="Signup.html">Register</a></h3>
-    </nav>
+    <nav id="navigation"></nav>
     <!--Navigation Bar-->
 
     <br />
@@ -29,20 +21,22 @@
         id="search-bar"
         placeholder="Search Books"
       />
-      <button type="submit" onclick="search()">Search</button>
+      <button type="button" onclick="search()">Search</button>
     </div>
     <div id="search-results">
       <!-- Search results will be displayed here -->
     </div>
-    <!--Search Bar-->
-
     <br />
 
     <!-- Container for books -->
     <div class="container">
       <!-- Books will be displayed here -->
     </div>
-
     <script src="script.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        updateNavBar();
+      });
+    </script>
   </body>
 </html>
