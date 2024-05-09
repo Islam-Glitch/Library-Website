@@ -25,11 +25,6 @@
         window.location.href = "login.html";
       }
 
-      function displayBorrowedBooks() {
-        // Implement displayBorrowedBooks logic here
-        // Assuming this function exists in script.js
-      }
-
       window.addEventListener("DOMContentLoaded", function () {
         const urlParams = new URLSearchParams(window.location.search);
         const title = urlParams.get("title");
@@ -60,18 +55,9 @@
                   borrowBook(book);
                 }
               });
-            } else {
-              console.error("Borrow button not found.");
             }
-          } else {
-            console.error("Book info container not found.");
           }
-        } else {
-          console.error("Book not found.");
         }
-
-        // Display borrowed books
-        displayBorrowedBooks();
 
         // Call the updateNavBar function from script.js
         updateNavBar();

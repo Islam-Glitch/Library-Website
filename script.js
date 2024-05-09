@@ -1,3 +1,4 @@
+//Create Book In The Local Storage
 class Book {
   constructor(title, category, author, description, image) {
     this.title = title;
@@ -18,23 +19,7 @@ class UI {
     }
   }
 
-  static addBookToHomePage(book) {
-    const container = document.querySelector(".container");
-
-    const bookDiv = document.createElement("div");
-    bookDiv.classList.add("book");
-
-    const bookLink = document.createElement("a");
-    bookLink.href = `Template_book.html?title=${encodeURI(book.title)}`;
-    bookLink.innerHTML = `
-      <img src="Data/Photos/${book.image}" class="image" alt="${book.description}" />
-      <h2>${book.title}</h2>
-    `;
-
-    bookDiv.appendChild(bookLink);
-    container.appendChild(bookDiv);
-  }
-
+  // Add Book in the admin Edit Page Which Has Delete button and Edit Button
   static addBookToList(book) {
     const list = document.querySelector("#book-list");
     const row = document.createElement("tr");
@@ -45,21 +30,25 @@ class UI {
       <td>${book.description}</td>
       <td><img src="../Data/Photos/${book.image}" style="max-width: 100px; max-height: 100px;" /></td>
       <td>
-        <a href="#" class="btn btn-danger btn-sm delete" data-description="${book.description}">Delete</a>
-        <a href="#" class="btn btn-primary btn-sm edit">Edit</a>
+        <a href="#" class="delete" data-description="${book.description}">Delete</a>
+        <a href="#" class="edit">Edit</a>
       </td>`;
     list.appendChild(row);
   }
 
   static deleteBook(element) {
     if (element.classList.contains("delete")) {
-      const description = element.getAttribute("data-description");
-      element.parentElement.parentElement.remove(); // Remove from UI
-      Store.removeBook(description); // Remove from local storage
+      const title =
+        element.parentElement.parentElement.querySelector(
+          "td:first-child"
+        ).textContent;
+      element.parentElement.parentElement.remove();
+      Store.removeBook(title); // Remove from local storage
       UI.showAlert("Book Removed", "success");
     }
   }
 
+  //Edit the Book
   static editBook(el) {
     const row = el.parentElement.parentElement;
     const cells = row.querySelectorAll("td:not(:last-child)");
@@ -87,6 +76,7 @@ class UI {
     el.classList.add("save");
   }
 
+  //To review the image in the table
   static previewImage(event) {
     const input = event.target;
     const preview = input.parentNode.querySelector("img");
@@ -104,6 +94,8 @@ class UI {
       preview.src = "";
     }
   }
+
+  //The Function of save book
 
   static saveBook(el) {
     const row = el.parentElement.parentElement;
@@ -153,6 +145,13 @@ class UI {
     UI.showAlert("Book Updated", "success");
   }
 
+  static clearFields() {
+    document.querySelector("#title").value = "";
+    document.querySelector("#category").value = "";
+    document.querySelector("#author").value = "";
+    document.querySelector("#description").value = "";
+    document.querySelector("#image").value = "";
+  }
   static showAlert(message, className) {
     const div = document.createElement("div");
     div.className = `alert alert-${className}`;
@@ -164,16 +163,27 @@ class UI {
     setTimeout(() => document.querySelector(".alert").remove(), 3000);
   }
 
-  static clearFields() {
-    document.querySelector("#title").value = "";
-    document.querySelector("#category").value = "";
-    document.querySelector("#author").value = "";
-    document.querySelector("#description").value = "";
-    document.querySelector("#image").value = "";
+  //Add The Book To The Home Template
+  static addBookToHomePage(book) {
+    const container = document.querySelector(".container");
+
+    const bookDiv = document.createElement("div");
+    bookDiv.classList.add("book");
+
+    const bookLink = document.createElement("a");
+    bookLink.href = `Template_book.html?title=${encodeURI(book.title)}`;
+    bookLink.innerHTML = `
+      <img src="Data/Photos/${book.image}" class="image" alt="${book.description}" />
+      <h2>${book.title}</h2>
+    `;
+
+    bookDiv.appendChild(bookLink);
+    container.appendChild(bookDiv);
   }
 }
 
 class Store {
+  //To get the book from local storage
   static getBooks() {
     let books;
     if (localStorage.getItem("books") === null) {
@@ -184,22 +194,19 @@ class Store {
     return books;
   }
 
+  //To add the book from local storage
   static addBook(book) {
     const books = Store.getBooks();
     books.push(book);
     localStorage.setItem("books", JSON.stringify(books));
   }
 
-  static removeBook(description) {
+  static removeBook(title) {
     const books = Store.getBooks();
 
-    books.forEach((book, index) => {
-      if (book.description === description) {
-        books.splice(index, 1);
-      }
-    });
+    const updatedBooks = books.filter((book) => book.title !== title);
 
-    localStorage.setItem("books", JSON.stringify(books));
+    localStorage.setItem("books", JSON.stringify(updatedBooks));
   }
 }
 
@@ -245,7 +252,123 @@ if (document.querySelector("#book-form")) {
     }
   });
 }
-//Form validations
+
+//Admin Rule2: Delet Users
+
+function populateUsersTable() {
+  var users = JSON.parse(localStorage.getItem("users")) || []; // Retrieve users from local storage or initialize an empty array
+
+  var tableBody = document.querySelector("#users-table tbody");
+
+  // Clear the table before populating it with new data
+  tableBody.innerHTML = "";
+
+  users.forEach(function (user, index) {
+    if (!user.isAdmin) {
+      // Check if user is not admin
+      var row = tableBody.insertRow();
+
+      // Insert cells with user data
+      row.insertCell(0).textContent = index + 1; // ID
+      row.insertCell(1).textContent = user.fullname; // Full Name
+      row.insertCell(2).textContent = user.username; // Username
+      row.insertCell(3).textContent = user.password; // Password
+      row.insertCell(4).textContent = user.email; // Email
+
+      // Create delete button
+      var deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "Delete";
+      deleteBtn.addEventListener("click", function () {
+        deleteUser(index);
+      });
+
+      // Insert delete button into action cell
+      var actionCell = row.insertCell(5);
+      actionCell.appendChild(deleteBtn);
+    }
+  });
+}
+
+function deleteUser(index) {
+  var users = JSON.parse(localStorage.getItem("users")); // Retrieve users from local storage
+
+  if (users && users.length > index) {
+    users.splice(index, 1); // Remove user from array
+    localStorage.setItem("users", JSON.stringify(users)); // Update local storage
+
+    // Repopulate table
+    populateUsersTable();
+  }
+}
+
+// Function to borrow a book
+function borrowBook(book) {
+  // Check if the user is logged in
+  if (!isLoggedIn()) {
+    alert("Login to borrow this book.");
+    redirectToLogin();
+    return;
+  }
+
+  let borrowedBooks = JSON.parse(localStorage.getItem("borrowedBooks")) || [];
+
+  // Check if the book is already borrowed
+  const alreadyBorrowed = borrowedBooks.some(
+    (borrowedBook) => borrowedBook.title === book.title
+  );
+
+  if (alreadyBorrowed) {
+    alert("This book is already borrowed.");
+    return;
+  }
+
+  // Add the book to the borrowed books list
+  borrowedBooks.push(book);
+  localStorage.setItem("borrowedBooks", JSON.stringify(borrowedBooks));
+
+  // Redirect to borrowed books page
+  window.location.href = "Borrow_book.html";
+}
+
+function redirectToLogin() {
+  window.location.href = "login.html";
+}
+
+function displayBorrowedBooks() {
+  const borrowedBooks = JSON.parse(localStorage.getItem("borrowedBooks")) || [];
+  const tbody = document.querySelector("#book-table tbody");
+
+  tbody.innerHTML = "";
+
+  borrowedBooks.forEach((book, index) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${book.title}</td>
+      <td>${book.category}</td>
+      <td>${book.author}</td>
+      <td><button class="delete-btn" data-index="${index}">Delete</button></td>
+    `;
+    tbody.appendChild(row);
+  });
+
+  // Add event listener to delete buttons
+  const deleteButtons = document.querySelectorAll(".delete-btn");
+  deleteButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      const index = parseInt(this.getAttribute("data-index"));
+      removeBookFromTable(index);
+    });
+  });
+}
+
+function removeBookFromTable(index) {
+  let borrowedBooks = JSON.parse(localStorage.getItem("borrowedBooks")) || [];
+  borrowedBooks.splice(index, 1);
+  localStorage.setItem("borrowedBooks", JSON.stringify(borrowedBooks));
+  displayBorrowedBooks(); // Refresh the table
+}
+
+//Form Validation
 function validateForm() {
   var fullname = document.getElementById("fullname").value;
   var username = document.getElementById("username").value;
@@ -431,164 +554,7 @@ function validateConfirmPasswordInput() {
   }
 }
 
-// this functoin for search with book name or book author and display the data.
-function search() {
-  // Get the search query from the input field
-  var query = document.getElementById("search-bar").value.trim().toLowerCase();
-
-  // If the search query is empty, clear the search results container and return
-  if (query === "") {
-    document.getElementById("search-results").innerHTML = "";
-    return;
-  }
-
-  // Retrieve books from local storage
-  var books = JSON.parse(localStorage.getItem("books")) || [];
-
-  // Filter books
-  var matchedBooks = books.filter(function (book) {
-    return book.title.toLowerCase().includes(query);
-  });
-
-  // Display the matched books
-  var searchResultsContainer = document.getElementById("search-results");
-  searchResultsContainer.innerHTML = "";
-
-  if (matchedBooks.length === 0) {
-    searchResultsContainer.innerHTML = "<p>No results found.</p>";
-  } else {
-    matchedBooks.forEach(function (book) {
-      var result = document.createElement("div");
-      result.classList.add("book");
-
-      var titleLink = document.createElement("a");
-      titleLink.textContent = book.title;
-      titleLink.href =
-        "Template_book.html?title=" + encodeURIComponent(book.title);
-
-      result.appendChild(titleLink);
-
-      // Append result to search results container
-      searchResultsContainer.appendChild(result);
-    });
-  }
-}
-
-function populateUsersTable() {
-  var users = JSON.parse(localStorage.getItem("users")) || []; // Retrieve users from local storage or initialize an empty array
-
-  var tableBody = document.querySelector("#users-table tbody");
-
-  // Clear the table before populating it with new data
-  tableBody.innerHTML = "";
-
-  users.forEach(function (user, index) {
-    if (!user.isAdmin) {
-      // Check if user is not admin
-      var row = tableBody.insertRow();
-
-      // Insert cells with user data
-      row.insertCell(0).textContent = index + 1; // ID
-      row.insertCell(1).textContent = user.fullname; // Full Name
-      row.insertCell(2).textContent = user.username; // Username
-      row.insertCell(3).textContent = user.password; // Password
-      row.insertCell(4).textContent = user.email; // Email
-
-      // Create delete button
-      var deleteBtn = document.createElement("button");
-      deleteBtn.textContent = "Delete";
-      deleteBtn.addEventListener("click", function () {
-        deleteUser(index);
-      });
-
-      // Insert delete button into action cell
-      var actionCell = row.insertCell(5);
-      actionCell.appendChild(deleteBtn);
-    }
-  });
-}
-
-function deleteUser(index) {
-  var users = JSON.parse(localStorage.getItem("users")); // Retrieve users from local storage
-
-  if (users && users.length > index) {
-    users.splice(index, 1); // Remove user from array
-    localStorage.setItem("users", JSON.stringify(users)); // Update local storage
-
-    // Repopulate table
-    populateUsersTable();
-  }
-}
-
-// signup.js
-
-// Function to borrow a book
-function borrowBook(book) {
-  // Check if the user is logged in
-  if (!isLoggedIn()) {
-    alert("Login to borrow this book.");
-    redirectToLogin();
-    return;
-  }
-
-  let borrowedBooks = JSON.parse(localStorage.getItem("borrowedBooks")) || [];
-
-  // Check if the book is already borrowed
-  const alreadyBorrowed = borrowedBooks.some(
-    (borrowedBook) => borrowedBook.title === book.title
-  );
-
-  if (alreadyBorrowed) {
-    alert("This book is already borrowed.");
-    return;
-  }
-
-  // Add the book to the borrowed books list
-  borrowedBooks.push(book);
-  localStorage.setItem("borrowedBooks", JSON.stringify(borrowedBooks));
-
-  // Redirect to borrowed books page
-  window.location.href = "Borrow_book.html";
-}
-
-function redirectToLogin() {
-  window.location.href = "login.html";
-}
-
-function displayBorrowedBooks() {
-  const borrowedBooks = JSON.parse(localStorage.getItem("borrowedBooks")) || [];
-  const tbody = document.querySelector("#book-table tbody");
-
-  tbody.innerHTML = "";
-
-  borrowedBooks.forEach((book, index) => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${book.title}</td>
-      <td>${book.category}</td>
-      <td>${book.author}</td>
-      <td><button class="delete-btn" data-index="${index}">Delete</button></td>
-    `;
-    tbody.appendChild(row);
-  });
-
-  // Add event listener to delete buttons
-  const deleteButtons = document.querySelectorAll(".delete-btn");
-  deleteButtons.forEach((button) => {
-    button.addEventListener("click", function () {
-      const index = parseInt(this.getAttribute("data-index"));
-      removeBookFromTable(index);
-    });
-  });
-}
-
-function removeBookFromTable(index) {
-  let borrowedBooks = JSON.parse(localStorage.getItem("borrowedBooks")) || [];
-  borrowedBooks.splice(index, 1);
-  localStorage.setItem("borrowedBooks", JSON.stringify(borrowedBooks));
-  displayBorrowedBooks(); // Refresh the table
-}
-
+//signupForm
 function handleSignupFormSubmission() {
   var isValid = validateForm(); // Perform form validation
 
@@ -637,16 +603,14 @@ function handleSignupFormSubmission() {
     // Store the updated array of users in local storage
     localStorage.setItem("users", JSON.stringify(users));
 
-    // Redirect the user to the login page after signup
-    window.location.href = "Login.html";
+    redirectToLogin();
   }
 
   // Ensure the form submission is prevented if validation fails
   return isValid;
 }
 
-// Other functions...
-
+//Login Function
 function handleLogin(userType) {
   var enteredUsername = document.getElementById("username-bar").value;
   var enteredPassword = document.getElementById("password-bar").value;
@@ -678,16 +642,16 @@ function handleLogin(userType) {
 
   if (user) {
     if (userType === "admin" && user.isAdmin) {
-      alert("Login as admin successful!");
-      console.log("Redirecting to admin homepage...");
+      alert("Hello, " + user.fullname + "! Welcome back!");
+
       // Store user role in session storage
       sessionStorage.setItem("userRole", "admin");
       // Store username in session storage
       sessionStorage.setItem("username", user.username);
       window.location.href = "admin/adminhomepage.html"; // Redirect to admin page
     } else if (userType === "user" && !user.isAdmin) {
-      alert("Login as user successful!");
-      console.log("Redirecting to user page...");
+      alert("Hello, " + user.fullname + "! Welcome back!");
+
       // Store user role in session storage
       sessionStorage.setItem("userRole", "user");
       // Store username in session storage
@@ -700,6 +664,7 @@ function handleLogin(userType) {
     alert("Invalid username or password");
   }
 }
+
 function isLoggedIn() {
   const userRole = sessionStorage.getItem("userRole");
   console.log("User role:", userRole);
@@ -745,4 +710,47 @@ function updateNavBar() {
 
 function redirectToSignup() {
   window.location.href = "signup.html";
+}
+
+// this functoin for search with book name or book author and display the data.
+function search() {
+  // Get the search query from the input field
+  var query = document.getElementById("search-bar").value.trim().toLowerCase();
+
+  // If the search query is empty, clear the search results container and return
+  if (query === "") {
+    document.getElementById("search-results").innerHTML = "";
+    return;
+  }
+
+  // Retrieve books from local storage
+  var books = JSON.parse(localStorage.getItem("books")) || [];
+
+  // Filter books
+  var matchedBooks = books.filter(function (book) {
+    return book.title.toLowerCase().includes(query);
+  });
+
+  // Display the matched books
+  var searchResultsContainer = document.getElementById("search-results");
+  searchResultsContainer.innerHTML = "";
+
+  if (matchedBooks.length === 0) {
+    searchResultsContainer.innerHTML = "<p>No results found.</p>";
+  } else {
+    matchedBooks.forEach(function (book) {
+      var result = document.createElement("div");
+      result.classList.add("book");
+
+      var titleLink = document.createElement("a");
+      titleLink.textContent = book.title;
+      titleLink.href =
+        "Template_book.html?title=" + encodeURIComponent(book.title);
+
+      result.appendChild(titleLink);
+
+      // Append result to search results container
+      searchResultsContainer.appendChild(result);
+    });
+  }
 }

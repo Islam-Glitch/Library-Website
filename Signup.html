@@ -11,13 +11,7 @@
     <nav id="navigation"></nav>
 
     <br />
-    <form
-      id="form"
-      role="form"
-      action="#"
-      method="POST"
-      onsubmit="return handleSignupFormSubmission()"
-    >
+    <form id="form" role="form" action="#" method="POST">
       <div>
         <label for="fullname">Full Name</label>
         <input
@@ -26,6 +20,7 @@
           placeholder="Enter Your first and last name"
           required
           id="fullname"
+          size="30"
           oninput="validateFullNameInput()"
         />
         <span id="fullname-error" class="error"></span>
@@ -40,6 +35,7 @@
           placeholder="Enter a username"
           required
           id="username"
+          size="30"
           oninput="validateUsernameInput()"
         />
         <span id="username-error" class="error"></span>
@@ -54,6 +50,7 @@
           placeholder="Enter your email"
           required
           id="email"
+          size="30"
           oninput="validateEmailInput()"
         />
         <span id="email-error" class="error"></span>
@@ -68,6 +65,7 @@
           placeholder="Enter a password"
           required
           id="password"
+          size="30"
           oninput="validatePasswordInput()"
         />
         <span id="password-error" class="error"></span>
@@ -82,6 +80,7 @@
           placeholder="Confirm your password"
           required
           id="confirmPassword"
+          size="30"
           oninput="validateConfirmPasswordInput()"
         />
         <span id="confirmPassword-error" class="error"></span>
@@ -95,7 +94,13 @@
       <br />
 
       <div>
-        <button type="submit" id="submit-button">Submit</button>
+        <button
+          type="button"
+          id="submit-button"
+          onclick="handleSignupFormSubmission()"
+        >
+          Submit
+        </button>
         <button type="button" onclick="resetForm()">Reset</button>
       </div>
       <br />

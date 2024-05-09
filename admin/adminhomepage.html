@@ -22,19 +22,28 @@
     <br />
     <a href="users.html">Users</a>
     <br />
-    <a href="../index.html">Logout</a>
+    <a href="#" onclick="logout()">Logout</a>
 
     <script>
       window.addEventListener("DOMContentLoaded", function () {
         if (!isAdmin()) {
           alert("You must log in as admin to access this page.");
-
-          // Delay the redirect to login page after the alert is dismissed
+          // Redirect to login page after the alert is dismissed
           setTimeout(function () {
             window.location.href = "../login.html";
           }, 0);
         }
       });
+
+      function logout() {
+        // Clear admin session
+        sessionStorage.removeItem("admin");
+        // Clear user session
+        sessionStorage.removeItem("userRole");
+        sessionStorage.removeItem("username");
+        // Redirect to login page
+        window.location.href = "../login.html";
+      }
     </script>
   </body>
 </html>
